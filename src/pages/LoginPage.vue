@@ -46,9 +46,7 @@
         },
         isError: false,
         isLoading: false,
-        message: '',
-        response: {},
-        data: ''
+        message: ''
       };
     },
     methods: {
@@ -58,10 +56,14 @@
       async login() {
         this.isLoading = true
         AdminServices.login(this.form).then((res) => {
-          this.isLoading = false
-          this.message = res.message
-          this.data = res.data
-          this.$router.push("/category-list");
+          if (!res.data.success) {
+            this.isLoading = false
+            this.message = res.data.message
+          } else {
+            this.isLoading = false
+            localStorage.setItem("AUTH_KEY", JSON.stringify(res.data.data))
+            this.$router.push("/category-list");
+          }
         }).catch((err) => {
           this.isLoading = false
           this.message = err.message

@@ -84,14 +84,14 @@ export default {
   },
   methods: {
     getContact() {
-      DataService.getAll()
-        .then((res) => {
-          this.contacts = res.data.data;
-        })
-        .catch((err) => {
-          console.log(err.message);
-          this.isError = true;
-        });
+      // DataService.getAll()
+      //   .then((res) => {
+      //     this.contacts = res.data.data;
+      //   })
+      //   .catch((err) => {
+      //     console.log(err.message);
+      //     this.isError = true;
+      //   });
     },
     goToCreate() {
       this.$router.push("/add");
@@ -107,13 +107,13 @@ export default {
       this.openConfirm = true;
     },
     deleteContact() {
-      this.openConfirm = false;
-      DataService.delete(this.idSelected)
-        .then(() => {
-          alert("Contact Deleted");
-          this.getContact();
-        })
-        .catch(() => (this.isError = true));
+      // this.openConfirm = false;
+      // DataService.delete(this.idSelected)
+      //   .then(() => {
+      //     alert("Contact Deleted");
+      //     this.getContact();
+      //   })
+      //   .catch(() => (this.isError = true));
     },
   },
   mounted() {
