@@ -9,10 +9,12 @@ export default {
 }
 </script>
 <template>
+  <!-- If Logged Id == True -->
   <Sidebar />
   <div :style="{ 'margin-left': sidebarWidth }">
     <router-view />
   </div>
+  <!---->
 </template>
 
 <style>

@@ -9,7 +9,7 @@ const router = createRouter({
       component: () => import("../pages/HomePage.vue"),
     },
     {
-      path: "/paricipant",
+      path: "/participant",
       name: "registration-form",
       component: () => import("../pages/RegistrationForm.vue"),
     },
