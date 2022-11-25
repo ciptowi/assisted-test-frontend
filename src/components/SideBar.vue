@@ -1,27 +1,67 @@
-<template>
-  <b-card class="sidebar px-3">
-    <a class="green" v-b-toggle.submenu>Menu</a>
-    <b-collapse id="submenu">
-      <ul>
-        <li>
-          <router-link class="green" to="/dashboard">Dashboard</router-link>
-        </li>
-        <li>
-          <router-link class="green" to="/category-list">List Kategori</router-link>
-        </li>
-      </ul>
-    </b-collapse>
-  </b-card>
-</template>
-
 <script>
+import SidebarLink from '../components/SidebarLink.vue'
+import { collapsed, toggleSidebar, sidebarWidth } from './state'
 export default {
-  name: "SideBar"
-};
+  props: {},
+  components: { SidebarLink },
+  setup() {
+    return { collapsed, toggleSidebar, sidebarWidth }
+  }
+}
 </script>
 
+<template>
+  <div class="sidebar" :style="{ width: sidebarWidth }">
+    <SidebarLink to="/admin-panel" icon="fas fa-home">Home</SidebarLink>
+    <SidebarLink to="/category-list" icon="fas fa-list-ul">Categories</SidebarLink>
+    <SidebarLink to="/admin" icon="fas fa-question-circle">Questions</SidebarLink>
+    <SidebarLink to="/admin" icon="fa fa-file-text">Test Session</SidebarLink>
+
+    <span
+      class="collapse-icon"
+      :class="{ 'rotate-180': collapsed }"
+      @click="toggleSidebar"
+    >
+      <i class="fas fa-angle-double-left" />
+    </span>
+  </div>
+</template>
+
 <style>
-  .sidebar {
-    min-height: 100vh;
-  }
+:root {
+  --sidebar-bg-color: #2f855a;
+  --sidebar-item-hover: #38a169;
+  --sidebar-item-active: #276749;
+}
+</style>
+
+<style scoped>
+.sidebar {
+  color: white;
+  background-color: var(--sidebar-bg-color);
+  float: left;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  padding: 0.5em;
+  transition: 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.sidebar h1 {
+  height: 2.5em;
+}
+.collapse-icon {
+  position: absolute;
+  bottom: 0;
+  padding: 0.75em;
+  color: rgba(255, 255, 255, 0.7);
+  transition: 0.2s linear;
+}
+.rotate-180 {
+  transform: rotate(180deg);
+  transition: 0.2s linear;
+}
 </style>
