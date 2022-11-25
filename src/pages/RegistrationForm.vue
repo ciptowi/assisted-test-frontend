@@ -1,6 +1,6 @@
 <template>
     <div class="text-center mt-3 m-b-3">
-        <img src="..." class="rounded-circle" alt="..." />
+        <!-- <img src="..." class="rounded-circle" alt="..." /> -->
         <h1>LOGO</h1>
         <h2>Form Pendaftaran Ujian <br/>--Placeholder--</h2>
     </div>
