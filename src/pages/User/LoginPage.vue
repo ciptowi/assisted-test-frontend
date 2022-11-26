@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import AdminServices from "../services/AdminServices";
+  import AdminServices from "../../services/AdminServices";
 
   export default {
     data() {

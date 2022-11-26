@@ -13,24 +13,24 @@
         </div>
         <div>
             <div class="form-check mb-2">
-                <input class="form-check-input mr-1" type="radio" name="a1" id="a1" value="1">
-                <label class="form-check-label" for="a1">Jawaban A</label>
+                <input class="form-check-input mr-1" type="radio" name="a1" id="opt1" value="1">
+                <label class="form-check-label" for="opt1">Jawaban A</label>
             </div>
             <div class="form-check mb-2">
-                <input class="form-check-input" type="radio" name="a2" id="a2" value="2">
-                <label class="form-check-label" for="a2">Jawaban B</label>
+                <input class="form-check-input" type="radio" name="a1" id="opt2" value="2">
+                <label class="form-check-label" for="opt2">Jawaban B</label>
             </div>
             <div class="form-check mb-2">
-                <input class="form-check-input" type="radio" name="a3" id="a3" value="3">
-                <label class="form-check-label" for="a3">Jawaban C</label>
+                <input class="form-check-input" type="radio" name="a1" id="opt3" value="3">
+                <label class="form-check-label" for="opt3">Jawaban C</label>
             </div>
             <div class="form-check mb-2">
-                <input class="form-check-input" type="radio" name="a4" id="a4" value="4">
-                <label class="form-check-label" for="a4">Jawaban D</label>
+                <input class="form-check-input" type="radio" name="a1" id="opt4" value="4">
+                <label class="form-check-label" for="opt4">Jawaban D</label>
             </div>
             <div class="form-check mb-2">
-                <input class="form-check-input" type="radio" name="a5" id="a5" value="5">
-                <label class="form-check-label" for="a5">Jawaban E</label>
+                <input class="form-check-input" type="radio" name="a1" id="opt5" value="5">
+                <label class="form-check-label" for="opt5">Jawaban E</label>
             </div>
             <button class="btn btn-success text-white mt-4 mb-3">Selanjutnya</button>
         </div>

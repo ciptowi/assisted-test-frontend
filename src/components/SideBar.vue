@@ -12,10 +12,10 @@ export default {
 
 <template>
   <div class="sidebar" :style="{ width: sidebarWidth }">
-    <SidebarLink to="/admin-panel" icon="fas fa-home">Home</SidebarLink>
-    <SidebarLink to="/category-list" icon="fas fa-list-ul">Categories</SidebarLink>
-    <SidebarLink to="/admin" icon="fas fa-question-circle">Questions</SidebarLink>
-    <SidebarLink to="/admin" icon="fa fa-file-text">Test Session</SidebarLink>
+    <SidebarLink to="/dashboard" icon="fas fa-home">Home</SidebarLink>
+    <SidebarLink to="/category" icon="fas fa-list-ul">Kategori</SidebarLink>
+    <SidebarLink to="/question" icon="fas fa-question-circle">Soal & Jawaban</SidebarLink>
+    <SidebarLink to="/session" icon="fa fa-file-text">Sesi ujian</SidebarLink>
 
     <span
       class="collapse-icon"
