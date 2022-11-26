@@ -1,6 +1,7 @@
 <template>
     <div class="text-center mt-3 m-b-3">
-        <b-img class="w-50" src="../src/assets/Logo.jpg" fluid alt="Yayasan Bina Citra Anak Bangsa"></b-img>
+        <!-- <b-img class="w-50" src="@/assets/Logo.jpg" fluid alt="Yayasan Bina Citra Anak Bangsa"></b-img> -->
+        <img class="w-50" src="@/assets/Logo.jpg" fluid alt="Yayasan Bina Citra Anak Bangsa"/>
         <h3>Form Pendaftaran Ujian <br/>Seleksi Calon Perangkat Desa Dayu Tanggal 17 Desember 2022</h3>
     </div>
     
