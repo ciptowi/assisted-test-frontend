@@ -1,9 +1,10 @@
 <script>
 import SidebarLink from '../components/SidebarLink.vue'
+import Navbar from './NavBar.vue';
 import { collapsed, toggleSidebar, sidebarWidth } from './state'
 export default {
   props: {},
-  components: { SidebarLink },
+  components: { SidebarLink, Navbar },
   setup() {
     return { collapsed, toggleSidebar, sidebarWidth }
   }
@@ -11,7 +12,8 @@ export default {
 </script>
 
 <template>
-  <div class="sidebar" :style="{ width: sidebarWidth }">
+  <Navbar />
+  <div class="sidebar mt-5" :style="{ width: sidebarWidth }">
     <SidebarLink to="/dashboard" icon="fas fa-home">Home</SidebarLink>
     <SidebarLink to="/category" icon="fas fa-list-ul">Kategori</SidebarLink>
     <SidebarLink to="/question" icon="fas fa-question-circle">Soal & Jawaban</SidebarLink>
