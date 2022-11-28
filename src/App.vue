@@ -1,21 +1,24 @@
+<template>
+  <div id="app">
+    <component :is="layout">
+      <router-view :key="$route.fullPath"></router-view>
+    </component>
+  </div>
+</template>
+
 <script>
-import Sidebar from '../src/components/SideBar.vue'
-import { sidebarWidth } from '../src/components/state'
+import JQuery from 'jquery'
+const defaultLayout = 'default'
+window.$ = JQuery
+
 export default {
-  components: { Sidebar },
-  setup() {
-    return { sidebarWidth }
+  computed: {
+    layout () {
+      return (this.$route.meta.layout || defaultLayout) + '-layout'
+    }
   }
 }
 </script>
-<template>
-  <!-- If Logged Id == True -->
-  <Sidebar />
-  <div :style="{ 'margin-left': sidebarWidth }">
-    <router-view />
-  </div>
-  <!---->
-</template>
 
 <style>
 

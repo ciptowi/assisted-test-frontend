@@ -62,7 +62,7 @@
           } else {
             this.isLoading = false
             localStorage.setItem("AUTH_KEY", JSON.stringify(res.data.data))
-            this.$router.push("/category-list");
+            this.$router.push("/dashboard");
           }
         }).catch((err) => {
           this.isLoading = false
