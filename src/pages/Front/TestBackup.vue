@@ -1,57 +1,47 @@
 <template>
-    <div class="responsive container mw-50 bg-light border rounded border-3 border-grey p-3 mt-5" v-show="finished == 1">
-        <div class="text-center mt-3 m-b-3">
-            <b-img class="w-50" src="../src/assets/Logo.jpg" fluid alt="Yayasan Bina Citra Anak Bangsa"></b-img>
-        </div>
-        
-        <b-card class="container w-50 rounded p-3">
-            <div class="form-group text-center">
-                <h3>Skor Akhir</h3>
-                <h1 class="mb-3">30</h1>
-
-                <h3>Benar : <span>3</span></h3>
-                <h3>Salah : <span>2</span></h3>
-            </div>      
-        </b-card>    
-    </div>
-    <div class="responsive container mw-50 bg-light border rounded border-3 border-grey p-3 mt-5" v-show="finished == 0">
+    <div class="responsive container mw-50 bg-light border rounded border-3 border-grey p-3 mt-5" >
         <div class="text-center">
             <label class="fs-4 w-10 p-1 bg-warning text-light border border-grey rounded"><b>{{  }}</b></label>
         </div>
         <div class="d-flex flex-row-reverse">
-            
-                <button class="btn btn-danger text-light" @click="endTest()"><b>Akhiri Ujian</b></button>
-            
+            <RouterLink to="test-end">
+                <button class="btn btn-danger text-light"><b>Akhiri Ujian</b></button>
+            </RouterLink>
         </div>
-        <div v-for="q in questions" v-show="q['id'] == (q_index+1)">
-            <div class="mb-4 mt-5" >
-                <p>
-                    <b>{{ q['id']+' ) '+q['question'] }}</b>
-                </p>            
-            </div>
-            <div>
-                <div class="mb-2">
-                    <div 
-                        class="form-check-label" 
-                        v-for="a in answers"
-                    >
-                        <label v-if="a['q_id'] == q['id']">
-                            <input 
-                                type="radio" 
-                                :id="a['id']" 
-                                class="control-form a-radio" 
-                                :value="a['id']" 
-                                @change="answered($event)" 
-                                :name="'a'+q['id']"
-                               
-                                
-                            >
-                            {{ a['answer'] }}
-                        </label>                    
-                </div>                
-            </div>
+        <div class="mb-4 mt-5">
+            <p>
+                <b>{{ q_index+1 +' ) '+questions[q_index]['question'] }}</b>
+            </p>            
+        </div>
+        <div>
+            <div class="mb-2">
+                <div 
+                    class="form-check-label" 
+                    v-for="a in answers"
+                >
+                    <label v-if="a['q_id'] == questions[q_index]['id']">
+                        <input 
+                            type="radio" 
+                            :id="a['id']" 
+                            class="control-form" 
+                            :value="a['id']" 
+                            @change="answered($event)" 
+                            :name="questions[q_index]['id']"
+                            :checked="selectedAnswer == a['id']"
+                        >
+                        {{ a['answer'] }}
+                    </label>                    
+            </div>                
         </div>
             <button 
+                v-show="selectedAnswer == '' && q_index+1 < this.questions.length" 
+                class="btn btn-warning rounded-pill text-white mt-4 mb-3"
+                @click="s_question"
+            >
+                Lewati <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+            </button>
+            <button 
+                v-show="selectedAnswer != '' && q_index+1 < this.questions.length" 
                 class="btn btn-success rounded-pill text-white mt-4 mb-3"
                 @click="n_question"
             >
@@ -63,7 +53,6 @@
                 v-for="(key, index) in questions"
                 class="btn border border-grey"
                 :class="{'shadow-lg bg-secondary text-light':index == q_index}"
-                @click="q_change(index)"
             >
                 {{ index+1 }}
             </button>
@@ -77,8 +66,6 @@
         name: 'Test',
         data: () => {
             return{
-                finished :0,
-                a_selected: [],
                 t_now: 0,
                 t_count: 0,
                 q_numb: 1,
@@ -245,26 +232,21 @@
         methods: {
             answered(a){
                 console.log('value = '+a.target.value)
-                console.log('index = '+this.q_index)            },
-            n_question(){
+                console.log('index = '+this.q_index)
+                console.log()
+                this.selectedAnswer = a.target.value            
+            },
+            s_question(){
+                console.log('index = '+this.q_index)
+                console.log('total = '+this.questions.length)
                 this.q_index++
+                this.selectedAnswer = ''
                 console.log('a = '+this.selectedAnswer)
             },
-            q_change(i){
-                this.q_index = i;
-            },
-            endTest(){
-                var radios = document.getElementsByClassName('a-radio');
-
-                for (var i = 0, length = radios.length; i < length; i++) {
-                    if (radios[i].checked) {
-                        this.a_selected.push(radios[i].value);
-                    }
-                }
-
-                console.log(this.a_selected);
-
-                this.finished = 1;
+            n_question(){
+                this.q_index++
+                this.selectedAnswer = ''
+                console.log('a = '+this.selectedAnswer)
             },
             timer(){
                 

@@ -1,20 +1,9 @@
 <script>
-import Sidebar from '../src/components/SideBar.vue'
-import { sidebarWidth } from '../src/components/state'
 export default {
-  components: { Sidebar },
-  setup() {
-    return { sidebarWidth }
-  }
 }
 </script>
 <template>
-  <!-- If Logged Id == True -->
-  <Sidebar />
-  <div :style="{ 'margin-left': sidebarWidth }">
-    <router-view />
-  </div>
-  <!---->
+  <component :is="$route.meta.layout || 'div'"></component>
 </template>
 
 <style>

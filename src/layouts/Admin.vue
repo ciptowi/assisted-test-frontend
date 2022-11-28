@@ -1,12 +1,4 @@
-<template>
-      <SideBar />
-      <div :style="{'margin-left': sidebarWidth}">
-        <RouterView/>
-      </div>
-</template>
-
 <script>
-import { RouterView } from "vue-router";
 import SideBar from "../components/SideBar.vue";
 import { sidebarWidth } from "../components/state";
 
@@ -21,3 +13,10 @@ export default {
   }
 }
 </script>
+<template>
+      <!--div :style="{ 'margin-left': sidebarWidth }"-->
+      <SideBar/>
+      <div id="body_container" :style="{ 'margin-left': sidebarWidth}">
+        <router-view/>
+      </div>
+</template>
