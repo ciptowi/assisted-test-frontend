@@ -1,6 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Admin from '../layouts/Admin.vue';
-import Default from '../layouts/Default.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,7 +44,7 @@ const router = createRouter({
       }
     },
     {
-      path: "/login",
+      path: "/auth-login",
       name: "login",
       component: () => import("../pages/User/LoginPage.vue"),
       meta: {
