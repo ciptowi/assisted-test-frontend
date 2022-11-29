@@ -7,10 +7,10 @@
         <b-card class="container w-50 rounded p-3">
             <div class="form-group text-center">
                 <h3>Skor Akhir</h3>
-                <h1 class="mb-3">30</h1>
+                <h1 class="mb-3">{{ (final_score*100/(10*questions.length)) }}</h1>
 
-                <h3>Benar : <span>3</span></h3>
-                <h3>Salah : <span>2</span></h3>
+                <h3>Benar : <span>{{ a_right }}</span></h3>
+                <h3>Salah : <span>{{ a_wrong }}</span></h3>
             </div>      
         </b-card>    
     </div>
@@ -54,6 +54,7 @@
             <button 
                 class="btn btn-success rounded-pill text-white mt-4 mb-3"
                 @click="n_question"
+                v-show="q_index+1 != (questions.length)"
             >
                 Selanjutnya <i class="fa fa-arrow-right" aria-hidden="true"></i>
             </button>    
@@ -64,6 +65,7 @@
                 class="btn border border-grey"
                 :class="{'shadow-lg bg-secondary text-light':index == q_index}"
                 @click="q_change(index)"
+                :id="'num_btn_'+index"
             >
                 {{ index+1 }}
             </button>
@@ -77,6 +79,9 @@
         name: 'Test',
         data: () => {
             return{
+                final_score: 0,
+                a_right: 0,
+                a_wrong: 0,
                 finished :0,
                 a_selected: [],
                 t_now: 0,
@@ -88,28 +93,18 @@
                     {
                         id: 1,
                         question: "Jika setiap peserta ujian sekarang sedang berpikir maka: ...",
-                        answers: {a:"Jika Si A Sedang berpikir maka sia bukan peserta ujian",b:"Jika Si A sekarang tidak berpikir maka ia peserta ujian",c:"Jika Si A Sedang berpikir maka ia peserta ujian",d:"Jika sekarang sedang berpikir maka si A bukan peserta ujian",e:"Jika Si A bukan peserta ujian maka ia tidak sedang berpikir"},
-                        correctAnswer: 'c',
                     },{
                         id: 2,
                         question: "Elang adalah burung elang terbang ke selatan,  Beberapa burung terbang ke selatan",
-                        answers: {a:"Semua burung adalah elang",b:"Tidak setiap elang yang terbang ke selatan adalah burung",c:"Burung bukan elang",d:"Tidak semua burung Elang terbang ke selatan",e:"Tidak semua burung terbang ke selatan"},
-                        correctAnswer: 'e'
                     },{
                         id: 3,
                         question: "Semua anggota  asosiasi profesi harus hadir dalam",
-                        answers: {a:"Semua yang hadir bukan dokter",b:"Semua dokter hadir dalam rapat",c:"Semua yang hadir dalam rapat adalah dokter",d:"sementara peserta rapat bukan anggota asosiasi profesi",e:"Sementara peserta rapat adalah dokter"},
-                        correctAnswer: 'e'
                     },{
                         id: 4,
                         question: "Semua warga desa Dayu adalah petani,  Pak Imam adalah warga desa Dayu",
-                        answers: {a:"Semua yang hadir bukan dokter",b:"Semua dokter hadir dalam rapat",c:"Semua yang hadir dalam rapat adalah dokter",d:"sementara peserta rapat bukan anggota asosiasi profesi",e:"Sementara peserta rapat adalah dokter"},
-                        correctAnswer: 'e'
                     },{
                         id: 5,
                         question: "Semua pengendara harus mengenakan helm,  Sebagian pengendara mengenakan sarung tangan",
-                        answers: {a:"Semua yang hadir bukan dokter",b:"Semua dokter hadir dalam rapat",c:"Semua yang hadir dalam rapat adalah dokter",d:"sementara peserta rapat bukan anggota asosiasi profesi",e:"Sementara peserta rapat adalah dokter"},
-                        correctAnswer: 'e'
                     },
                 ],
                 answers : [
@@ -244,23 +239,42 @@
         },
         methods: {
             answered(a){
-                console.log('value = '+a.target.value)
-                console.log('index = '+this.q_index)            },
+                console.log('index = '+this.q_index)  
+                var num_btn = document.getElementById('num_btn_'+this.q_index);
+                num_btn.style.backgroundColor ="Chartreuse";
+                
+                console.log('value = '+a.target.value)                          
+            },
             n_question(){
-                this.q_index++
                 console.log('a = '+this.selectedAnswer)
+                this.q_index++
             },
             q_change(i){
                 this.q_index = i;
             },
             endTest(){
-                var radios = document.getElementsByClassName('a-radio');
+                var a_radios = document.getElementsByClassName('a-radio');
 
-                for (var i = 0, length = radios.length; i < length; i++) {
-                    if (radios[i].checked) {
-                        this.a_selected.push(radios[i].value);
+                for (var i = 0, length = a_radios.length; i < length; i++) {
+                    if (a_radios[i].checked) {
+                        this.a_selected.push(a_radios[i].value);
                     }
                 }
+
+                for ( var as_i = 0, as_l = this.a_selected.length; as_i < as_l; as_i++ ){
+                    for( var a_i = 0, a_l = this.answers.length; a_i < a_l; a_i++ ){
+                        if( this.a_selected[as_i] == this.answers[a_i].id ){
+                            console.log(this.answers[a_i].score)
+                            this.final_score = this.final_score+this.answers[a_i].score;
+                            if( this.answers[a_i].score != 0 ){
+                                this.a_right++
+                            }
+                        }
+                        
+                    }
+                }
+
+                this.a_wrong = this.questions.length - this.a_right
 
                 console.log(this.a_selected);
 
