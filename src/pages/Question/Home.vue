@@ -11,7 +11,6 @@
       <table id="q-table" class="display table mt-1 text-center table-bordered table-hover">
         <thead>
           <tr>
-            <th>No</th>
             <th>Kategori</th>
             <th>pertanyaan</th>
             <th class="w-11">Status</th>
@@ -19,55 +18,17 @@
           </tr>
         </thead>
         <tbody>
-          <tr>
-              <td>1</td>
-              <td>Perangkat Desa Dayu</td>
-              <td>Jika setiap peserta ujian sekarang sedang berpikir maka: ...</td>
-              <td><span class="status-active">Aktif</span></td>
+          <tr v-for="q in questions">
+              <td>{{ q.category }}</td>
+              <td>{{ q.question }}</td>
+              <td v-show="(q.status == 1)"><span class="status-active">Aktif</span></td>
+              <td v-show="(q.status == 2)"><span class="status-inactive">Non Aktif</span></td>
               <td>
                 <RouterLink to="edit-question">
                   <button class="btn btn-sm btn-info btn-md text-white">Edit</button>
                 </RouterLink>              
-                <b-button size="sm" class="mx-1 text-white" variant="warning">Non-Aktifkan</b-button>
-                <b-button size="sm" class="mx-1" variant="danger">Hapus</b-button>
-              </td>          
-          </tr>
-          <tr>
-              <td>3</td>
-              <td>Perangkat Desa Dayu</td>
-              <td>Semua anggota  asosiasi profesi harus hadir dalam</td>
-              <td><span class="status-active">Aktif</span></td>
-              <td>
-                <RouterLink to="edit-question">
-                  <button class="btn btn-sm btn-info btn-md text-white">Edit</button>
-                </RouterLink>              
-                <b-button size="sm" class="mx-1 text-white" variant="warning">Non-Aktifkan</b-button>
-                <b-button size="sm" class="mx-1" variant="danger">Hapus</b-button>
-              </td>          
-          </tr>
-          <tr>
-              <td>4</td>
-              <td>Perangkat Desa Dayu</td>
-              <td>Semua warga desa Dayu adalah petani,  Pak Imam adalah warga desa Dayu</td>
-              <td><span class="status-inactive">Non Aktif</span></td>
-              <td>
-                <RouterLink to="edit-question">
-                  <button class="btn btn-sm btn-info btn-md text-white">Edit</button>
-                </RouterLink>              
-                <b-button size="sm" class="mx-1 text-white" variant="success">Aktifkan</b-button>
-                <b-button size="sm" class="mx-1" variant="danger">Hapus</b-button>
-              </td>          
-          </tr>
-          <tr>
-              <td>5</td>
-              <td>Perangkat Desa Dayu</td>
-              <td>Semua pengendara harus mengenakan helm,  Sebagian pengendara mengenakan sarung tangan</td>
-              <td><span class="status-inactive">Non Aktif</span></td>
-              <td>
-                <RouterLink to="edit-question">
-                  <button class="btn btn-sm btn-info btn-md text-white">Edit</button>
-                </RouterLink>              
-                <b-button size="sm" class="mx-1 text-white" variant="success">Aktifkan</b-button>
+                <b-button size="sm" class="mx-1 text-white" variant="warning" v-show="(q.status == 1)">Non-Aktifkan</b-button>
+                <b-button size="sm" class="mx-1 text-white" variant="success" v-show="(q.status == 2)">Aktifkan</b-button>
                 <b-button size="sm" class="mx-1" variant="danger">Hapus</b-button>
               </td>          
           </tr>
@@ -76,3 +37,38 @@
     </div>
   </div>
 </template>
+<script>
+  export default{
+    data: () => {
+      return{
+        questions: [
+          {
+            category: 'Perangkat Desa Dayu',
+            question: 'Jika setiap peserta ujian sekarang sedang berpikir maka: ...',
+            status: 1
+          },{
+            category: 'Perangkat Desa Dayu',
+            question: 'Pertanyaan 2 ?',
+            status: 1
+          },{
+            category: 'Perangkat Desa Dayu',
+            question: 'Pertanyaan 3',
+            status: 1
+          },{
+            category: 'Perangkat Desa Dayu',
+            question: 'Pertanyaan 4',
+            status: 1
+          },{
+            category: 'Perangkat Desa Dayu',
+            question: 'P5 ?',
+            status: 2
+          },{
+            category: 'Perangkat Desa Dayu',
+            question: 'P6 ?',
+            status: 2
+          },
+        ]
+      }      
+    }
+  }
+</script>

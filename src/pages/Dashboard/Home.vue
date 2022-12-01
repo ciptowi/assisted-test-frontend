@@ -5,7 +5,6 @@
       <table id="q-table" class="display table mt-1 text-center table-bordered table-hover">
         <thead>
           <tr>
-            <th>No</th>
             <th>Keterangan</th>
             <th>Kategori</th>
             <th>Batas Waktu</th>
@@ -13,10 +12,9 @@
         </thead>
         <tbody>
           <tr>
-              <td>1</td>
-              <td>Seleksi Calon Perangkat Desa Dayu Tanggal 17 Desember 2022</td>
-              <td>- Perangkat Desa Dayu</td>
-              <td>120 Menit</td>
+              <td>{{ active_session[0]['description'] }}</td>
+              <td v-for="c in active_session[0]['category']"> {{ '- '+c }} </td>
+              <td>{{ active_session[0]['time_limit'] }} Menit</td>
           </tr>
         </tbody>
       </table>
@@ -26,49 +24,68 @@
       <table id="q-table" class="display table mt-1 text-center table-bordered table-hover">
         <thead>
           <tr>
-            <th>No</th>
-            <th>Kategori</th>
-            <th>NIK</th>
             <th>Nama</th>
+            <th>Kategori</th>
+            <th>NIK</th>            
             <th>Nomor Peserta</th>
+            <th>Status</th>
             <th>Nilai</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-              <td>1</td>
-              <td>Perangkat Desa Dayu</td>
-              <td>350509##########</td>
-              <td>Peserta A</td>
-              <td>P0001</td>
-              <td>680</td>
-          </tr>
-          <tr>
-              <td>2</td>
-              <td>Perangkat Desa Dayu</td>
-              <td>350509##########</td>
-              <td>Peserta B</td>
-              <td>P0002</td>
-              <td>660</td>
-          </tr>
-          <tr>
-              <td>3</td>
-              <td>Perangkat Desa Dayu</td>
-              <td>350509##########</td>
-              <td>Peserta C</td>
-              <td>P0003</td>
-              <td>690</td>
-          </tr>
-          <tr>
-              <td>4</td>
-              <td>Perangkat Desa Dayu</td>
-              <td>350509##########</td>
-              <td>Peserta D</td>
-              <td>P0004</td>
-              <td>710</td>
+          <tr v-for="p in participant">
+              <td>{{ p.name }}</td>
+              <td>{{ p.category }}</td>
+              <td>{{ p.nik }}</td>
+              <td>{{ p.p_numb }}</td>
+              <td v-show="(p.status == 1)">Belum Selesai Ujian</td>
+              <td v-show="(p.status == 2)">Selesai Mengikuti Ujian</td>
+              <td>{{ p.score }}</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
 </template>
+
+
+<script>
+  export default{
+    data : ()=>{
+      return{
+        active_session: [ //from db active_session where status == 2(active)
+          {
+            id: 1,
+            description: 'Seleksi Calon Perangkat Desa Dayu Tanggal 17 Desember 2022',
+            category: ['Perangkat Desa Dayu'],
+            time_limit: 50
+          }
+        ],
+        participant:[ //from db participant where session_id == active_session.id join category
+          {
+            category: 'Perangkat Desa Dayu',
+            nik: '111111111111',
+            name: 'Peserta A',
+            p_numb: 'p01',
+            status: 1,
+            score: 0
+          },{
+            category: 'Perangkat Desa Dayu',
+            nik: '222222222222',
+            name: 'Peserta B',
+            p_numb: 'p02',
+            status: 2,
+            score: 80
+          },{
+            category: 'Perangkat Desa Dayu',
+            nik: '333333333333',
+            name: 'Peserta C',
+            p_numb: 'p03',
+            status: 2,
+            score: 60
+          },
+        ]
+      }
+    }
+  }
+</script>

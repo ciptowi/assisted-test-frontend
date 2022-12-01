@@ -1,4 +1,8 @@
 <template>
+    <!-- Participant Id Placeholder -->>
+    <input type="hidden" name="participant_id" value="1">
+
+    <!-- Final Score -->
     <div class="responsive container mw-50 bg-light border rounded border-3 border-grey p-3 mt-5" v-show="finished == 1">
         <div class="text-center mt-3 m-b-3">
             <b-img class="w-50" src="../src/assets/Logo.jpg" fluid alt="Yayasan Bina Citra Anak Bangsa"></b-img>
@@ -14,21 +18,28 @@
             </div>      
         </b-card>    
     </div>
+
+    <!-- Quiz Section -->
     <div class="responsive container mw-50 bg-light border rounded border-3 border-grey p-3 mt-5" v-show="finished == 0">
+        
+        <!-- Timer Placeholder -->
         <div class="text-center">
-            <label class="fs-4 w-10 p-1 bg-warning text-light border border-grey rounded"><b>{{  }}</b></label>
+            <label class="fs-4 w-10 p-1 bg-warning text-light border border-grey rounded"><b id="cd">{{ timer }}</b></label>
         </div>
+        
         <div class="d-flex flex-row-reverse">
-            
                 <button class="btn btn-danger text-light" @click="endTest()"><b>Akhiri Ujian</b></button>
-            
         </div>
+
+        <!-- Load Questions from array 'questions' in JS -->
         <div v-for="q in questions" v-show="q['id'] == (q_index+1)">
             <div class="mb-4 mt-5" >
                 <p>
                     <b>{{ q['id']+' ) '+q['question'] }}</b>
                 </p>            
             </div>
+
+            <!-- Load Answers from array 'answers' in JS -->
             <div>
                 <div class="mb-2">
                     <div 
@@ -43,8 +54,6 @@
                                 :value="a['id']" 
                                 @change="answered($event)" 
                                 :name="'a'+q['id']"
-                               
-                                
                             >
                             {{ a['answer'] }}
                         </label>                    
@@ -59,6 +68,7 @@
                 Selanjutnya <i class="fa fa-arrow-right" aria-hidden="true"></i>
             </button>    
     </div>
+        <!-- Pagination -->
         <div class="container text-center flex-wrap mt-5">
             <button 
                 v-for="(key, index) in questions"
@@ -79,17 +89,19 @@
         name: 'Test',
         data: () => {
             return{
-                final_score: 0,
-                a_right: 0,
-                a_wrong: 0,
-                finished :0,
-                a_selected: [],
-                t_now: 0,
-                t_count: 0,
-                q_numb: 1,
-                q_index: 0,
-                selectedAnswer: '',
-                questions : [
+                a_right: 0, //right answer
+                a_wrong: 0, //wrong answer
+                finished :0, //finished state
+                q_index: 0, // questions index
+
+                //insert into db
+                a_selected: [], //selected answers
+                sess_id: document.getElementsByName('participant_id'), //participant id
+                final_score: 0, //final score
+
+                //get from db
+                timer: 75*60, //timer from db test_session.time_limit * 60 sec
+                questions : [ //questions array from db
                     {
                         id: 1,
                         question: "Jika setiap peserta ujian sekarang sedang berpikir maka: ...",
@@ -107,7 +119,7 @@
                         question: "Semua pengendara harus mengenakan helm,  Sebagian pengendara mengenakan sarung tangan",
                     },
                 ],
-                answers : [
+                answers : [ //answers array from db
                     {
                         id: 1,
                         q_id: 1,
@@ -237,7 +249,26 @@
                 ]
             }            
         },
+        watch: {
+            //countdown timer function
+            timer: {
+                handler(value) {
+                    if (value > 0) {
+                        setTimeout(() => {
+                            this.timer--;
+                        }, 1000);
+                    }else{
+                        this.endTest()
+                    }
+                },
+                immediate: true // This ensures the watcher is triggered upon creation
+            },
+        },
+        created() {
+            window.addEventListener('beforeunload', this.endTest)
+        },
         methods: {
+            //change pagination color after selecting answer
             answered(a){
                 console.log('index = '+this.q_index)  
                 var num_btn = document.getElementById('num_btn_'+this.q_index);
@@ -245,26 +276,32 @@
                 
                 console.log('value = '+a.target.value)                          
             },
+
+            //go to next question
             n_question(){
-                console.log('a = '+this.selectedAnswer)
                 this.q_index++
             },
+
+            //change question index to change showed question
             q_change(i){
                 this.q_index = i;
             },
+
+            //finish test
             endTest(){
                 var a_radios = document.getElementsByClassName('a-radio');
 
+                //take all selected answers id and push it into array
                 for (var i = 0, length = a_radios.length; i < length; i++) {
                     if (a_radios[i].checked) {
                         this.a_selected.push(a_radios[i].value);
                     }
                 }
 
+                //count how many answers are right
                 for ( var as_i = 0, as_l = this.a_selected.length; as_i < as_l; as_i++ ){
                     for( var a_i = 0, a_l = this.answers.length; a_i < a_l; a_i++ ){
                         if( this.a_selected[as_i] == this.answers[a_i].id ){
-                            console.log(this.answers[a_i].score)
                             this.final_score = this.final_score+this.answers[a_i].score;
                             if( this.answers[a_i].score != 0 ){
                                 this.a_right++
@@ -274,16 +311,16 @@
                     }
                 }
 
+                //count how many answers are wrong
                 this.a_wrong = this.questions.length - this.a_right
 
                 console.log(this.a_selected);
 
+                //change state to finished
                 this.finished = 1;
             },
-            timer(){
-                
-            }
         },
-        
     }
+
+    
 </script>

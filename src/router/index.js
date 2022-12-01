@@ -36,14 +36,6 @@ const router = createRouter({
       }
     },
     {
-      path: "/test-end",
-      name: "test-end",
-      component: () => import("../pages/Front/TestEnd.vue"),
-      meta: {
-        public: true
-      }
-    },
-    {
       path: "/auth-login",
       name: "login",
       component: () => import("../pages/User/LoginPage.vue"),
