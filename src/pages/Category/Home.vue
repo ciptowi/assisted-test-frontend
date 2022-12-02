@@ -34,7 +34,7 @@
                 <b-button type="submit" class="btn btn-sm btn-info btn-md text-white" @click="Update(c.id)">Update</b-button>
                 <b-button v-show="(c.status == 1)" size="sm" class="mx-1 text-white" variant="warning" @click="UpdateStatus(c.id,2)">Non-Aktifkan</b-button>
                 <b-button v-show="(c.status == 2)" size="sm" class="mx-1 text-white" variant="success" @click="UpdateStatus(c.id,1)">Aktifkan</b-button>
-                <b-button size="sm" class="mx-1" variant="danger" @click="Delete(c.id)">Hapus</b-button>
+                <b-button size="sm" class="mx-1" variant="danger" @click="Update(c.id,0)">Hapus</b-button>
               </td>          
           </tr>
         </tbody>
@@ -86,16 +86,13 @@
       Update(id){
         var c_id = 'c'+id;
         var name = document.getElementById(c_id).value;
-        console.log('Set Name into '+name+' where id =='+id);
+        console.log('Set Name into '+name+' where id == '+id);
         //Update category name
       },
       UpdateStatus(id,status){
-        console.log('Set Status into '+status+' where id =='+id);
+        console.log('Set Status into '+status+' where id == '+id);
         //Update category status
-      },Delete(id){
-        console.log('Set Status into = 0 where id =='+id);
-        //Update category status
-      },
+      }
     },
   }
 </script>

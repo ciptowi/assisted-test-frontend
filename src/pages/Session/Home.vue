@@ -29,9 +29,9 @@
                 <RouterLink to="edit-session">
                   <button class="btn btn-sm btn-info btn-md text-white">Edit</button>
                 </RouterLink>              
-                <b-button size="sm" class="mx-1 text-white" variant="warning" v-show="(s.status == 1)">Non-Aktifkan</b-button>
-                <b-button size="sm" class="mx-1 text-white" variant="success" v-show="(s.status == 2)">Aktifkan</b-button>
-                <b-button size="sm" class="mx-1" variant="danger">Hapus</b-button>
+                <b-button size="sm" class="mx-1 text-white" variant="warning" v-show="(s.status == 1)" @click="UpdateStatus(s.id,2)">Non-Aktifkan</b-button>
+                <b-button size="sm" class="mx-1 text-white" variant="success" v-show="(s.status == 2)" @click="UpdateStatus(s.id,1)">Aktifkan</b-button>
+                <b-button size="sm" class="mx-1" variant="danger" @click="UpdateStatus(s.id,0)">Hapus</b-button>
               </td>          
           </tr>
         </tbody>
@@ -45,27 +45,34 @@
       return{
         sessions: [
           {
+            id: 1,
             description: 'Seleksi Calon Perangkat Desa Dayu Tanggal 17 Desember 2022',
             categories: ['Perangkat Desa Dayu'],
             time_limit: 50,
             status: 1
           },{
+            id: 2,
             description: 'Tes Kemampuan Dasar CV A 30 Desember 2022',
             categories: ['Tenaga Administrasi', 'Marketing Officer', 'Resepsionis'],
             time_limit: 120,
             status: 2
           },{
+            id: 3,
             description: 'Seleksi Calon Perangkat Desa Penataran Tanggal 20 Januari 2023',
             categories: ['Perangkat Desa Penataran'],
             time_limit: 60,
             status: 2
           },{
+            id: 4,
             description: 'Tes',
             categories: ['Resepsionis'],
             time_limit: 30,
             status: 2
           },
         ]
+      },UpdateStatus(id,status){
+        console.log('Set Status into '+status+' where id == '+id);
+        //Update category status
       }
     }
   }

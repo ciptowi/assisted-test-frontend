@@ -27,9 +27,9 @@
                 <RouterLink to="edit-question">
                   <button class="btn btn-sm btn-info btn-md text-white">Edit</button>
                 </RouterLink>              
-                <b-button size="sm" class="mx-1 text-white" variant="warning" v-show="(q.status == 1)">Non-Aktifkan</b-button>
-                <b-button size="sm" class="mx-1 text-white" variant="success" v-show="(q.status == 2)">Aktifkan</b-button>
-                <b-button size="sm" class="mx-1" variant="danger">Hapus</b-button>
+                <b-button size="sm" class="mx-1 text-white" variant="warning" v-show="(q.status == 1)" @click="UpdateStatus(q.id,2)">Non-Aktifkan</b-button>
+                <b-button size="sm" class="mx-1 text-white" variant="success" v-show="(q.status == 2)" @click="UpdateStatus(q.id,1)">Aktifkan</b-button>
+                <b-button size="sm" class="mx-1" variant="danger" @click="UpdateStatus(q.id,0)">Hapus</b-button>
               </td>          
           </tr>
         </tbody>
@@ -43,32 +43,43 @@
       return{
         questions: [
           {
+            id: 1,
             category: 'Perangkat Desa Dayu',
             question: 'Jika setiap peserta ujian sekarang sedang berpikir maka: ...',
             status: 1
           },{
+            id: 2,
             category: 'Perangkat Desa Dayu',
             question: 'Pertanyaan 2 ?',
             status: 1
           },{
+            id: 3,
             category: 'Perangkat Desa Dayu',
             question: 'Pertanyaan 3',
             status: 1
           },{
+            id: 4,
             category: 'Perangkat Desa Dayu',
             question: 'Pertanyaan 4',
             status: 1
           },{
+            id: 5,
             category: 'Perangkat Desa Dayu',
             question: 'P5 ?',
             status: 2
           },{
+            id: 6,
             category: 'Perangkat Desa Dayu',
             question: 'P6 ?',
             status: 2
           },
         ]
-      }      
+      }
+    },methods: {
+      UpdateStatus(id,status){
+        console.log('Set Status into '+status+' where id == '+id);
+        //Update category status
+      }
     }
   }
 </script>
