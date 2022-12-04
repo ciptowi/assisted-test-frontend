@@ -5,10 +5,13 @@
     
     <div class="row">
       <div class="col-md-4">
-        <input type="text" class="form-control form-control-md" placeholder="Nama Kategori Baru" name="category_name" id="c_name">
+        <input type="text" v-model="inputCategory" class="form-control form-control-md" placeholder="Nama Kategori Baru" name="category_name" id="c_name">
       </div>
       <div class="col-md-4">
-        <button v-on:click="this.InsertCategory()" class="btn btn-primary mb-2">
+        <button v-if="inputCategory === ''" class="btn btn-primary mb-2" disabled>
+            Tambahkan      
+        </button>
+        <button v-else v-on:click="this.InsertCategory()" class="btn btn-primary mb-2">
             Tambahkan      
         </button>
       </div>
@@ -39,15 +42,19 @@
           </tr>
         </tbody>
       </table>
+      <code>{{ listCategory }}</code>
     </div>
   
   </div>
 </template>
 
 <script>
+import CategoryServices from "../../services/CategoryServices";
+
   export default{
     data: ()=>{
       return{
+        inputCategory: '',
         categories: [ //get from db categories where status != 0
           {
             id: 1,
@@ -78,10 +85,27 @@
       }
     },
     methods: {
+      getCategories(){
+        CategoryServices.find().then((res) => {
+          console.log(res);
+          if(res.status === 200) {
+            this.categories = res.data.data
+          }
+        }).catch((err) => {
+          alert(err.message)
+        })
+      },
       InsertCategory(){
-        var name = document.getElementById('c_name').value;
-        console.log('Insert '+name);
-        //insert category using name as name
+        const data = Object.assign({})
+        data.name = this.inputCategory
+        data.status = 1
+        CategoryServices.insert(data).then((res) => {
+          this.inputCategory = ''
+          alert(res.data.message)
+          this.getCategories()
+        }).catch((err) => {
+          alert(err.message)
+        })
       },
       Update(id){
         var c_id = 'c'+id;
@@ -94,5 +118,8 @@
         //Update category status
       }
     },
+    created () {
+      this.getCategories()
+    }
   }
 </script>
