@@ -70,9 +70,6 @@
             status: 2
           },
         ]
-      },UpdateStatus(id,status){
-        console.log('Set Status into '+status+' where id == '+id);
-        //Update category status
       }
     }
   }
