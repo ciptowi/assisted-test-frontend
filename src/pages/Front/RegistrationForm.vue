@@ -1,25 +1,27 @@
 <template>
     <div class="text-center mt-3 m-b-3">
         <!-- <b-img class="w-50" src="@/assets/Logo.jpg" fluid alt="Yayasan Bina Citra Anak Bangsa"></b-img> -->
-        <img class="w-50" src="@/assets/Logo.jpg" fluid alt="Yayasan Bina Citra Anak Bangsa"/>
-        <h3>Form Pendaftaran Ujian <br/>Seleksi Calon Perangkat Desa Dayu Tanggal 17 Desember 2022</h3>
+        
+        <img style="width: 100px; margin-bottom: 10px;" src="@/assets/logo.png" alt="Yayasan Bina Citra Anak Bangsa"/>
+        <br><h5>PUSAT STUDI PENDIDIKAN DAN PEMBERDAYAAN KEWARGANEGARAAN</h5>
+        <h4 class="mt-3">Form Pendaftaran Ujian <br/>Seleksi Calon Perangkat Desa Dayu Tanggal 17 Desember 2022</h4>
     </div>
     
-    <b-card class="container w-50 rounded p-3">
+    <b-card class="container w-75 rounded p-3">
         <div class="form-group justify-content-md-center">
             <form>
                 <div class="row">
-                    <div class="col-sm p-2">
+                    <div class="col-sm mb-3">
                         <input type="text" required class="form-control form-control-lg" placeholder="Nama">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm p-2">
+                    <div class="col-sm mb-3">
                         <input type="text" required class="form-control form-control-lg" placeholder="NIK">
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-sm p-2">
+                    <div class="col-sm mb-3">
                         <input type="text" required class="form-control form-control-lg" placeholder="Nomor Peserta">
                     </div>
                 </div>

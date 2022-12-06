@@ -5,7 +5,8 @@
     <!-- Final Score -->
     <div class="responsive container mw-50 bg-light border rounded border-3 border-grey p-3 mt-5" v-show="finished == 1">
         <div class="text-center mt-3 m-b-3">
-            <b-img class="w-50" src="../src/assets/Logo.jpg" fluid alt="Yayasan Bina Citra Anak Bangsa"></b-img>
+            <img style="width: 100px; margin-bottom: 10px;" src="@/assets/logo.png" alt="Yayasan Bina Citra Anak Bangsa"/>
+            
         </div>
         
         <b-card class="container w-50 rounded p-3">
