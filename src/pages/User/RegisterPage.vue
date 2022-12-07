@@ -8,7 +8,7 @@
               <div class="text-center">
                 <h3>Registrasi Admin</h3>
               </div>
-              <b-form @submit="register" @reset="onReset">
+              <b-form @submit="register" @reset="">
                 <b-form-group>
                   <label class="my-3">Username</label>
                   <b-form-input v-model="form.username" type="text" placeholder="Username" required />
