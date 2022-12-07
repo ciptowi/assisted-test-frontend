@@ -27,9 +27,9 @@
                 </div>
                 <div class="row">
                     <div class="col-sm p-2 mb-3">
-                        <select class="form-control form-control-lg">
-                            <option value="" disabled selected>--Kategori--</option>
-                            <option value="1">Perangkat Desa Kedawung</option>
+                        <select class="form-control form-control-lg" v-model="selected">
+                            <option value="" disabled selected >-- Pilih Kategori --</option>
+                            <option v-for="data in optionCategory" :key="data.id" :value="data.id">{{ data.name }}</option>
                         </select>
                     </div>
                 </div>
@@ -42,3 +42,32 @@
         </div>      
     </b-card>    
 </template>
+
+<script>
+import CategoryService from '../../services/CategoryServices'
+
+
+export default {
+    name: 'registration',
+    data () {
+        return {
+            optionCategory: [],
+            selected: ''
+        }
+    },
+    methods: {
+        async getAllCategory() {
+            const param = Object.assign({})
+            param.status = 1
+            const response = await CategoryService.find(param)
+            if (response.status === 200) {
+                this.optionCategory = response.data.data
+            }
+            console.log(this.optionCategory)
+        }
+    },
+    created () {
+       this.getAllCategory()
+    }
+}
+</script>
