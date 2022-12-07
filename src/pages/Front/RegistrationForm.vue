@@ -38,6 +38,11 @@
                         <Router-link to="test-prep"><input type="submit" class="btn btn-lg btn-primary" value="Submit"></Router-link>
                     </div>
                 </div>
+                <div class="row text-center m-t-3">
+                    <div class="col-sm p-2">
+                        <Router-link to="/auth-login"><input type="button" class="btn btn-lg btn-primary" value="login"></Router-link>
+                    </div>
+                </div>
             </Form>
         </div>      
     </b-card>    
