@@ -1,4 +1,5 @@
 <template>
+    <Router-link to="/auth-login"><button class="btn btn-sm btn-success mr-4"><i class="fa fa-sign-in" aria-hidden="true"></i></button></Router-link>
     <div class="text-center mt-3 m-b-3">
         <!-- <b-img class="w-50" src="@/assets/Logo.jpg" fluid alt="Yayasan Bina Citra Anak Bangsa"></b-img> -->
         
@@ -36,11 +37,6 @@
                 <div class="row text-center m-t-3">
                     <div class="col-sm p-2">
                         <Router-link to="test-prep"><input type="submit" class="btn btn-lg btn-primary" value="Submit"></Router-link>
-                    </div>
-                </div>
-                <div class="row text-center m-t-3">
-                    <div class="col-sm p-2">
-                        <Router-link to="/auth-login"><input type="button" class="btn btn-lg btn-primary" value="login"></Router-link>
                     </div>
                 </div>
             </Form>

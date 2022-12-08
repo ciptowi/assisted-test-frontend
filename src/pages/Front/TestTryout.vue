@@ -1,14 +1,15 @@
 <template>
-    <!-- Participant Id Placeholder -->>
+    <!-- Participant Id Placeholder -->
     <input type="hidden" name="participant_id" value="1">
-
     <!-- Final Score -->
     <div class="responsive container mw-50 bg-light border rounded border-3 border-grey p-3 mt-5" v-show="finished == 1">
+        <Router-Link to="test-prep">
+            <button class="btn btn-warning text-light">Kembali</button>
+        </Router-Link>
         <div class="text-center mt-3 m-b-3">
             <img style="width: 100px; margin-bottom: 10px;" src="@/assets/logo.png" alt="Yayasan Bina Citra Anak Bangsa"/>
             
         </div>
-        
         <b-card class="container w-50 rounded p-3">
             <div class="form-group text-center">
                 <h3>Skor Akhir</h3>
@@ -22,10 +23,12 @@
 
     <!-- Quiz Section -->
     <div class="responsive container mw-50 bg-light border rounded border-3 border-grey p-3 mt-5" v-show="finished == 0">
-        
+        <Router-Link to="test-prep">
+            <button class="btn btn-warning text-light">Kembali</button>
+        </Router-Link>
         <!-- Timer Placeholder -->
         <div class="text-center">
-            <label class="fs-4 w-10 p-1 bg-warning text-light border border-grey rounded"><b>{{ 'Timer' }}</b></label>
+            <label class="fs-4 w-10 p-1 bg-warning text-light border border-grey rounded"><b id="cd">{{ timer }}</b></label>
         </div>
         
         <div class="d-flex flex-row-reverse">
@@ -90,6 +93,7 @@
         name: 'Test',
         data: () => {
             return{
+                timer: 5*60,
                 final_score: 0, //final score
                 a_right: 0, //right answer
                 a_wrong: 0, //wrong answer
@@ -99,150 +103,165 @@
                 questions : [ //questions array from db
                     {
                         id: 1,
-                        question: "Jika setiap peserta ujian sekarang sedang berpikir maka: ...",
+                        question: "Pahlawan perumus Pancasila yaitu ...",
                     },{
                         id: 2,
-                        question: "Elang adalah burung elang terbang ke selatan,  Beberapa burung terbang ke selatan",
+                        question: "Nyaris >< ....",
                     },{
                         id: 3,
-                        question: "Semua anggota  asosiasi profesi harus hadir dalam",
+                        question: "1, 2, 3, 5, ...., 13, 21, ....",
                     },{
                         id: 4,
-                        question: "Semua warga desa Dayu adalah petani,  Pak Imam adalah warga desa Dayu",
+                        question: "SOTK Desa di Blitar diatur dalam Peraturan Bupati Blitar nomor ...",
                     },{
                         id: 5,
-                        question: "Semua pengendara harus mengenakan helm,  Sebagian pengendara mengenakan sarung tangan",
+                        question: "Contoh lembaga yang ada di desa kecuali,....",
                     },
                 ],
                 answers : [ //answers array from db
                     {
                         id: 1,
                         q_id: 1,
-                        answer: "Jika Si A Sedang berpikir maka sia bukan peserta ujian",
+                        answer: "Sukarno, Moh. Hatta, M. Yamin",
                         score: 0
                     },{
                         id: 2,
                         q_id: 1,
-                        answer: "Jika Si A sekarang tidak berpikir maka ia peserta ujian",
-                        score: 0
+                        answer: "Sukarno, Soepomo, M. Yamin",
+                        score: 10
                     },{
                         id: 3,
                         q_id: 1,
-                        answer: "Jika Si A Sedang berpikir maka ia peserta ujian",
-                        score: 10
+                        answer: "M. Yamin, Moh. Hatta, Ahmad Subarjo",
+                        score: 0
                     },{
                         id: 4,
                         q_id: 1,
-                        answer: "Jika sekarang sedang berpikir maka si A bukan peserta ujian",
+                        answer: "Ahmad Subarjo, M. Yamin, Sukarno",
                         score: 0
                     },{
                         id: 5,
                         q_id: 1,
-                        answer: "Jika Si A bukan peserta ujian maka ia tidak sedang berpikir",
+                        answer: "Moh. Hatta, Sukarno, Wahid Hasyim",
                         score: 0
                     },{
                         id: 6,
                         q_id: 2,
-                        answer: "Semua burung adalah elang",
-                        score: 0
+                        answer: "Jauh",
+                        score: 10
                     },{
                         id: 7,
                         q_id: 2,
-                        answer: "Tidak setiap elang yang terbang ke selatan adalah burung",
+                        answer: "Hampir",
                         score: 0
                     },{
                         id: 8,
                         q_id: 2,
-                        answer: "Burung bukan elang",
+                        answer: "Mendekati",
                         score: 0
                     },{
                         id: 9,
                         q_id: 2,
-                        answer: "Tidak semua burung Elang terbang ke selatan",
+                        answer: "Lekat",
                         score: 0
                     },{
                         id: 10,
                         q_id: 2,
-                        answer: "Tidak semua burung terbang ke selatan",
-                        score: 10
+                        answer: "Menempel",
+                        score: 0
                     },{
                         id: 11,
                         q_id: 3,
-                        answer: "Semua yang hadir bukan dokter",
+                        answer: "6 dan 22",
                         score: 0
                     },{
                         id: 12,
                         q_id: 3,
-                        answer: "Semua dokter hadir dalam rapat",
+                        answer: "8 dan 30",
                         score: 0
                     },{
                         id: 13,
                         q_id: 3,
-                        answer: "Semua yang hadir dalam rapat adalah dokter",
-                        score: 0
+                        answer: "8 dan 34",
+                        score: 10
                     },{
                         id: 14,
                         q_id: 3,
-                        answer: "sementara peserta rapat bukan anggota asosiasi profesi",
+                        answer: "10 dan 30",
                         score: 0
                     },{
                         id: 15,
                         q_id: 3,
-                        answer: "Sementara peserta rapat adalah dokter",
-                        score: 10
+                        answer: "7 dan 27",
+                        score: 0
                     },{
                         id: 16,
                         q_id: 4,
-                        answer: "Pak Imam pasti seorang petani",
-                        score: 10
+                        answer: "25 tahun 2017",
+                        score: 0
                     },{
                         id: 17,
                         q_id: 4,
-                        answer: "Pak Imam bukan seorang petani",
+                        answer: "9 tahun 2017",
                         score: 0
                     },{
                         id: 18,
                         q_id: 4,
-                        answer: "Pak Imam terpaksa menjadi petani",
+                        answer: "33 tahun 2018",
                         score: 0
                     },{
                         id: 19,
                         q_id: 4,
-                        answer: "Pak Imam belum mau menjadi petani",
-                        score: 0
+                        answer: "26 tahun 2017",
+                        score: 10
                     },{
                         id: 20,
                         q_id: 4,
-                        answer: "Pak Imam petani dari desa sebelah di Dayu",
+                        answer: "68 tahun 2021",
                         score: 0
                     },{
                         id: 21,
                         q_id: 5,
-                        answer: "sebagian pengendara tidak mengenakan helm",
+                        answer: "LPMD",
                         score: 0
                     },{
                         id: 22,
                         q_id: 5,
-                        answer: "sebagian pengendara mengenakan helm dan sarung tangan",
-                        score: 10
+                        answer: "BPD",
+                        score: 0
                     },{
                         id: 23,
                         q_id: 5,
-                        answer: "semua pengendara tidak mengenakan sarung tangan",
+                        answer: "Karang Taruna",
                         score: 0
                     },{
                         id: 24,
                         q_id: 5,
-                        answer: "sebagian pengendara tidak menggunakan helm dan sarung tangan",
+                        answer: "Karang Wreda",
                         score: 0
                     },{
                         id: 25,
                         q_id: 5,
-                        answer: "sebagian pengendara tidak mengenakan helm dan tidak mengenakan sarung tangan",
-                        score: 0
+                        answer: "LPMK",
+                        score: 10
                     },
                 ]
             }            
+        },
+        watch: {
+            //countdown timer function
+            timer: {
+                handler(value) {
+                    if (value > 0) {
+                        setTimeout(() => {
+                            this.timer--;
+                        }, 1000);
+                    }else{
+                        this.endTest()
+                    }
+                },
+                immediate: true // This ensures the watcher is triggered upon creation
+            },
         },
         methods: {
             //change pagination color after selecting answer
@@ -295,9 +314,6 @@
 
                 //change state to finished
                 this.finished = 1;
-            },
-            timer(){
-                
             }
         },
         

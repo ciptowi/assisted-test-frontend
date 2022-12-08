@@ -23,9 +23,9 @@
                 <!-- <div class="text-center mt-3">
                   <p>Lupa Password</p>
                 </div> -->
-                <div class="text-center mt-3">
+                <!--div class="text-center mt-3">
                   <a @click="goToRegister" class="primary">Registrasi</a>
-                </div>
+                </div-->
               </b-form>
           </b-card>
         </div>

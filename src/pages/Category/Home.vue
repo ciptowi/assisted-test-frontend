@@ -35,9 +35,9 @@
               <td v-show="(c.status == 2)"><span class="status-inactive">Non Aktif</span></td>
               <td>
                 <b-button type="submit" class="btn btn-sm btn-info btn-md text-white" @click="Update(c.id)">Update</b-button>
-                <b-button v-show="(c.status == 1)" size="sm" class="mx-1 text-white" variant="warning" @click="UpdateStatus(c.id,2)">Non-Aktifkan</b-button>
+                <b-button v-show="(c.status == 1)" size="sm" class="mx-1 text-white" variant="warning" @click="UpdateCategory(c.id,)">Non-Aktifkan</b-button>
                 <b-button v-show="(c.status == 2)" size="sm" class="mx-1 text-white" variant="success" @click="UpdateStatus(c.id,1)">Aktifkan</b-button>
-                <b-button size="sm" class="mx-1" variant="danger" @click="Update(c.id,0)">Hapus</b-button>
+                <b-button size="sm" class="mx-1" variant="danger" @click="UpdateCategory(c.id,0)">Hapus</b-button>
               </td>          
           </tr>
         </tbody>
@@ -55,33 +55,7 @@ import CategoryServices from "../../services/CategoryServices";
     data: ()=>{
       return{
         inputCategory: '',
-        categories: [ //get from db categories where status != 0
-          {
-            id: 1,
-            name: 'Perangkat Desa Dayu',
-            status: 1
-          },{
-            id: 2,
-            name: 'Perangkat Desa Modangan',
-            status: 1
-          },{
-            id: 3,
-            name: 'Perangkat Desa Ngoran',
-            status: 1
-          },{
-            id: 4,
-            name: 'Tenaga Administrasi',
-            status: 2
-          },{
-            id: 5,
-            name: 'Resepsionis',
-            status: 2
-          },{
-            id: 6,
-            name: 'Marketing',
-            status: 2
-          },
-        ]
+        categories: []
       }
     },
     methods: {
@@ -101,6 +75,17 @@ import CategoryServices from "../../services/CategoryServices";
         data.status = 1
         CategoryServices.insert(data).then((res) => {
           this.inputCategory = ''
+          alert(res.data.message)
+          this.getCategories()
+        }).catch((err) => {
+          alert(err.message)
+        })
+      },
+      UpdateCategory(id,s){
+        const data = Object.assign({})
+        data.status = s
+        console.log(id)
+        CategoryServices.update(id,data).then((res) => {
           alert(res.data.message)
           this.getCategories()
         }).catch((err) => {

@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-sm fixed-top px-4 navbar-dark bg-success">
-    <a class="navbar-brand" href="#">Panel Admin Seleksi Calon Perangkat Desa Dayu</a>
+    <a class="navbar-brand" href="#">Panel Admin</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" 
         data-target="#navbarSupportedContent" 
         aria-controls="navbarSupportedContent" aria-expanded="false" 
@@ -25,7 +25,7 @@
     </div>
     <div class="navbar-nav ml-auto">
         <h5 class="mt-2 mx-5 text-light">{{ user }}</h5>
-        <b-button size="sm" class="mx-1 text-white" variant="success" @click="logout">Logout</b-button>
+        <b-button size="sm" class="mx-1 text-white" variant="danger" @click="logout">Logout <i class="fa fa-sign-in" aria-hidden="true"></i></b-button>
     </div>
 </nav>
 </template>
