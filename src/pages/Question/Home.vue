@@ -19,8 +19,8 @@
         </thead>
         <tbody>
           <tr v-for="q in questions">
-              <td>{{ q.category }}</td>
-              <td>{{ q.question }}</td>
+              <td>{{ q.category_id }}</td>
+              <td>{{ q.content }}</td>
               <td v-show="(q.status == 1)"><span class="status-active">Aktif</span></td>
               <td v-show="(q.status == 2)"><span class="status-inactive">Non Aktif</span></td>
               <td>
@@ -38,48 +38,32 @@
   </div>
 </template>
 <script>
+  import QuestionServices from "../../services/QuestionServices";
+
   export default{
     data: () => {
       return{
-        questions: [
-          {
-            id: 1,
-            category: 'Perangkat Desa Dayu',
-            question: 'Jika setiap peserta ujian sekarang sedang berpikir maka: ...',
-            status: 1
-          },{
-            id: 2,
-            category: 'Perangkat Desa Dayu',
-            question: 'Pertanyaan 2 ?',
-            status: 1
-          },{
-            id: 3,
-            category: 'Perangkat Desa Dayu',
-            question: 'Pertanyaan 3',
-            status: 1
-          },{
-            id: 4,
-            category: 'Perangkat Desa Dayu',
-            question: 'Pertanyaan 4',
-            status: 1
-          },{
-            id: 5,
-            category: 'Perangkat Desa Dayu',
-            question: 'P5 ?',
-            status: 2
-          },{
-            id: 6,
-            category: 'Perangkat Desa Dayu',
-            question: 'P6 ?',
-            status: 2
-          },
-        ]
+        questions: []
       }
     },methods: {
+      async getQuestions(){
+        QuestionServices.q_find().then((res) => {
+          console.log(res);
+          if(res.status === 200) {
+            this.questions = res.data.data
+          }
+        }).catch((err) => {
+          alert(err.message)
+        })
+        console.log(this.questions)
+      },
       UpdateStatus(id,status){
         console.log('Set Status into '+status+' where id == '+id);
         //Update category status
       }
+    },
+    created () {
+      this.getQuestions()
     }
   }
 </script>

@@ -10,53 +10,72 @@
     
     <b-card class="container w-75 rounded p-3">
         <div class="form-group justify-content-md-center">
-            <form>
-                <div class="row">
-                    <div class="col-sm mb-3">
-                        <input type="text" required class="form-control form-control-lg" placeholder="Nama">
-                    </div>
+            <div class="row">
+                <div class="col-sm mb-3">
+                    <input type="text" class="form-control form-control-lg" placeholder="Nama" v-model="i_name">
                 </div>
-                <div class="row">
-                    <div class="col-sm mb-3">
-                        <input type="text" required class="form-control form-control-lg" placeholder="NIK">
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-sm mb-3">
+                    <input type="text" class="form-control form-control-lg" placeholder="NIK" v-model="i_nil">
                 </div>
-                <div class="row">
-                    <div class="col-sm mb-3">
-                        <input type="text" required class="form-control form-control-lg" placeholder="Nomor Peserta">
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-sm mb-3">
+                    <input type="text" class="form-control form-control-lg" placeholder="Nomor Peserta" v-model="i_p_numb">
                 </div>
-                <div class="row">
-                    <div class="col-sm p-2 mb-3">
-                        <select class="form-control form-control-lg" v-model="selected">
-                            <option value="" disabled selected >-- Pilih Kategori --</option>
-                            <option v-for="data in optionCategory" :key="data.id" :value="data.id">{{ data.name }}</option>
-                        </select>
-                    </div>
+            </div>
+            <div class="row">
+                <div class="col-sm p-2 mb-3">
+                    <select class="form-control form-control-lg" v-model="i_c_id">
+                        <option value="" disabled selected >-- Pilih Kategori --</option>
+                        <option v-for="data in optionCategory" :key="data.id" :value="data.id">{{ data.name }}</option>
+                    </select>
                 </div>
-                <div class="row text-center m-t-3">
-                    <div class="col-sm p-2">
-                        <Router-link to="test-prep"><input type="submit" class="btn btn-lg btn-primary" value="Submit"></Router-link>
-                    </div>
+            </div>
+            <div class="row text-center m-t-3">
+                <div class="col-sm p-2">
+                    <button class="btn btn-lg btn-primary" @click="InsertParticipant()">Submit</button>
                 </div>
-            </Form>
+            </div>
         </div>      
     </b-card>    
 </template>
 
 <script>
 import CategoryService from '../../services/CategoryServices'
+import ParticipantService from '../../services/ParticipantServices'
 
 
 export default {
     name: 'registration',
     data () {
         return {
+            t_s_id: 1,
+            i_name: '',
+            i_nik: '',
+            i_p_numb: '',
+            i_c_id: '',
             optionCategory: [],
             selected: ''
         }
     },
     methods: {
+        InsertParticipant(){
+            const data = Object.assign({})
+            data.test_session_id = this.t_s_id
+            data.category_id = this.i_c_id
+            data.nik = this.i_nik
+            data.name = this.i_name
+            data.participant_numb = this.i_p_numb
+            data.score = 0
+            ParticipantService.insert(data).then((res) => {
+                alert(res.data.message)
+                console.log(data)
+            }).catch((err) => {
+                alert(err.message)
+            })
+        },
         async getAllCategory() {
             const param = Object.assign({})
             param.status = 1
