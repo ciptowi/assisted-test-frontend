@@ -19,12 +19,12 @@
         </thead>
         <tbody>
           <tr v-for="q in questions">
-              <td>{{ q.category_id }}</td>
+              <td v-for="c in categories" v-show="(c.id == q.category_id)">{{ c.name }}</td>
               <td>{{ q.content }}</td>
               <td v-show="(q.status == 1)"><span class="status-active">Aktif</span></td>
               <td v-show="(q.status == 2)"><span class="status-inactive">Non Aktif</span></td>
               <td>
-                <RouterLink to="edit-question">
+                <RouterLink :to="'edit-question/'+q.id">
                   <button class="btn btn-sm btn-info btn-md text-white">Edit</button>
                 </RouterLink>              
                 <b-button size="sm" class="mx-1 text-white" variant="warning" v-show="(q.status == 1)" @click="UpdateStatus(q.id,2)">Non-Aktifkan</b-button>
@@ -39,14 +39,16 @@
 </template>
 <script>
   import QuestionServices from "../../services/QuestionServices";
+  import CategoryServices from "../../services/CategoryServices";
 
   export default{
     data: () => {
       return{
-        questions: []
+        questions: [],
+        categories: []
       }
     },methods: {
-      async getQuestions(){
+      getQuestions(){
         QuestionServices.q_find().then((res) => {
           console.log(res);
           if(res.status === 200) {
@@ -55,15 +57,32 @@
         }).catch((err) => {
           alert(err.message)
         })
-        console.log(this.questions)
       },
-      UpdateStatus(id,status){
-        console.log('Set Status into '+status+' where id == '+id);
-        //Update category status
-      }
+      getCategories(){
+        CategoryServices.find().then((res) => {
+          console.log(res);
+          if(res.status === 200) {
+            this.categories = res.data.data
+          }
+        }).catch((err) => {
+          alert(err.message)
+        })
+      },
+      UpdateStatus(id,s){
+        const data = Object.assign({})
+        data.status = s
+        console.log(id)
+        QuestionServices.update(id,data).then((res) => {
+          alert(res.data.message)
+          this.getQuestions()
+        }).catch((err) => {
+          alert(err.message)
+        })
+      },
     },
     created () {
       this.getQuestions()
+      this.getCategories()
     }
   }
 </script>

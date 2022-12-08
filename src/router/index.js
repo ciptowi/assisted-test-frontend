@@ -86,8 +86,9 @@ const router = createRouter({
       }
     },
     {
-      path: "/edit-question",
+      path: '/edit-question/:q_id',
       name: "edt-question",
+      props: true,
       component: () => import("../pages/Question/Edit.vue"),
       meta: {
         layout: 'admin'
