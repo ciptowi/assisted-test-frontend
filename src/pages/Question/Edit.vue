@@ -6,20 +6,47 @@
       <div class="row" v-for="q in question">
         <div class="col-3">
           <select class="form-control form-control-md" name="c" required>
-            <option v-for="c in categories" :value="c.id" :selected="(c.id == q.category_id)">{{ c.name }}</option>
+            <option v-for="c in categories" :value="c.id" :selected="(c.id == q.category_id)" v-show="(c.status == 1)">{{ c.name }}</option>
           </select>
         </div>
         <div class="col-9">
           <input type="text" class="form-control form-control-md" placeholder="Pertanyaan" name="q" required :value="q.content">
         </div>
       </div>
-      <div class="row mt-3" v-for="a in answers">
-        <input type="hidden" name="a_id" :value="a.id">
+      <div class="row mt-3">
         <div class="col-4">
-          <input type="text" class="form-control form-control-sm" placeholder="Jawaban" name="a1" :value="a.content">
+          <input type="text" class="form-control form-control-sm" placeholder="Jawaban a" name="a1" value="">
         </div>
         <div class="col-2">
-          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban a" name="a1p" :value="a.score">
+          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban a" name="a1p" value="">
+        </div>
+        <div class="col-4">
+          <input type="text" class="form-control form-control-sm" placeholder="Jawaban b" name="a2" value="">
+        </div>
+        <div class="col-2">
+          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban b" name="a2p" value="">
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-4">
+          <input type="text" class="form-control form-control-sm" placeholder="Jawaban c" name="a3" value="">
+        </div>
+        <div class="col-2">
+          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban c" name="a3p" value="">
+        </div>
+        <div class="col-4">
+          <input type="text" class="form-control form-control-sm" placeholder="Jawaban d" name="a4" value="">
+        </div>
+        <div class="col-2">
+          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban d" name="a4p" value="">
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-4">
+          <input type="text" class="form-control form-control-sm" placeholder="Jawaban e" name="a5" value="">
+        </div>
+        <div class="col-2">
+          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban e" name="a5p" value="">
         </div>
       </div>
       <div class="text-center mt-4">
@@ -45,18 +72,19 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
         question: [],
         categories: [],
         answers: [],
+        a_index: 0,
       }
     },
     methods:{
       getCategories(){
         const param = Object.assign({})
-        param.status = 1;
+        //param.status = 1;
         //console.log(param)
-        CategoryServices.find(param).then((res) => {
+        CategoryServices.find().then((res) => {
           //console.log(res);
           if(res.status === 200) {
             this.categories = res.data.data
-            console.log(res)
+            //console.log(res)
           }
         }).catch((err) => {
           alert(err.message)
@@ -64,11 +92,13 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
       },
       getAnswers(){
         const param = Object.assign({})
-        param.question_id = this.q_id;
+        param.question_id = this.q_id
+        console.log(param)
         QuestionServices.a_find(param).then((res) => {
           //console.log(res);
           if(res.status === 200) {
             this.answers = res.data.data
+            console.log(res)
           }
         }).catch((err) => {
           alert(err.message)
@@ -76,10 +106,8 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
       },
       getQuestion(){
         QuestionServices.q_findById(this.q_id).then((res) => {
-          //console.log(res);
           if(res.status === 200) {
             this.question = res.data.data
-            //console.log(this.question)
           }
         }).catch((err) => {
           alert(err.message)

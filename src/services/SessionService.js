@@ -1,8 +1,8 @@
 import http from "./http-common";
 
 class SessionService {
-  insert(data) {
-    return http.post("/test-session/insert", data);
+  insert(data, token) {
+    return http.post("/test-session/insert", data, { headers: { Authorization: token }});
   }
   find(param) {
     return http.get("/test-session", param);
@@ -10,8 +10,8 @@ class SessionService {
   findById(id) {
     return http.get(`/test-session/${id}`);
   }
-  update(id, data) {
-    return http.put(`/test-session/${id}`, data);
+  update(id, data, token) {
+    return http.put(`/test-session/${id}`, data, { headers: { Authorization: token }});
   }
 }
 export default new SessionService();

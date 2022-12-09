@@ -111,8 +111,9 @@ const router = createRouter({
       }
     },
     {
-      path: "/edit-session",
+      path: "/edit-session/:s_id",
       name: "edit-session",
+      props: true,
       component: () => import("../pages/Session/Edit.vue"),
       meta: {
         layout: 'admin'

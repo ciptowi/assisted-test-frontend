@@ -1,7 +1,4 @@
 import axios from "axios";
-// import { userAuthStore } from '../stores/auth'
-
-// const store = userAuthStore()
 //const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
 //console.log('token is', token)
 
