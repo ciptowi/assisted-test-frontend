@@ -62,9 +62,7 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
     },
     methods: {
       getCategories(){
-        const param = Object.assign({})
-        param.status = 1
-        CategoryServices.find(param).then((res) => {
+        CategoryServices.find(0).then((res) => {
           if(res.status === 200) {
             this.categories = res.data.data
             console.log(res)
@@ -77,6 +75,7 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
         const data = Object.assign({})
         data.name = this.inputCategory
         data.status = 1
+        console.log(data)
         CategoryServices.insert(data, token).then((res) => {
           this.inputCategory = ''
           alert(res.data.message)

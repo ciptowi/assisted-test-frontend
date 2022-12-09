@@ -2,10 +2,10 @@ import http from "./http-common";
 
 class CategoryService {
   insert(data, token) {
-    return http.post("/category/insert", data, { headers: { Authorization: token }});
+    return http.post(`/category/insert`, data, { headers: { Authorization: token }});
   }
-  find(param) {
-    return http.get("/category", param);
+  find(status) {
+    return http.get(`/category?status=${status}`);
   }
   findById(id) {
     return http.get(`/category/${id}`);

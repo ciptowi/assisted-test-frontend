@@ -67,6 +67,8 @@
         categories: [],
         question: [],
         q_id: '',
+        inputCategory: '',
+        inputContent
       }
     },methods: {
       getCategories(){

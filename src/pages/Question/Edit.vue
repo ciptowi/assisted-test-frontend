@@ -5,54 +5,52 @@
     <b-card class="float-right">
       <div class="row" v-for="q in question">
         <div class="col-3">
-          <select class="form-control form-control-md" name="c" required>
-            <option v-for="c in categories" :value="c.id" :selected="(c.id == q.category_id)" v-show="(c.status == 1)">{{ c.name }}</option>
+          <select class="form-control form-control-md" name="c" required v-model="inputCategory">
+            <option v-for="c in categories" :value="c.id" :selected="(c.id == q.category_id)">{{ c.name }}</option>
           </select>
         </div>
         <div class="col-9">
-          <input type="text" class="form-control form-control-md" placeholder="Pertanyaan" name="q" required :value="q.content">
+          <input type="text" class="form-control form-control-md" placeholder="Pertanyaan" name="q" required :value="q.content" >
         </div>
       </div>
       <div class="row mt-3">
         <div class="col-4">
-          <input type="text" class="form-control form-control-sm" placeholder="Jawaban a" name="a1" value="">
+          <input type="text" class="form-control form-control-sm" placeholder="Jawaban a" name="a1" :value="answers[0].content">
         </div>
         <div class="col-2">
-          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban a" name="a1p" value="">
+          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban a" name="a1p" :value="answers[0].score">
         </div>
         <div class="col-4">
-          <input type="text" class="form-control form-control-sm" placeholder="Jawaban b" name="a2" value="">
+          <input type="text" class="form-control form-control-sm" placeholder="Jawaban b" name="a2" :value="answers[1].content">
         </div>
         <div class="col-2">
-          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban b" name="a2p" value="">
+          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban b" name="a2p" :value="answers[1].score">
         </div>
       </div>
       <div class="row mt-3">
         <div class="col-4">
-          <input type="text" class="form-control form-control-sm" placeholder="Jawaban c" name="a3" value="">
+          <input type="text" class="form-control form-control-sm" placeholder="Jawaban c" name="a3" :value="answers[2].content">
         </div>
         <div class="col-2">
-          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban c" name="a3p" value="">
+          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban c" name="a3p" :value="answers[2].score">
         </div>
         <div class="col-4">
-          <input type="text" class="form-control form-control-sm" placeholder="Jawaban d" name="a4" value="">
+          <input type="text" class="form-control form-control-sm" placeholder="Jawaban d" name="a4" :value="answers[3].content">
         </div>
         <div class="col-2">
-          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban d" name="a4p" value="">
+          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban d" name="a4p" :value="answers[3].score">
         </div>
       </div>
       <div class="row mt-3">
         <div class="col-4">
-          <input type="text" class="form-control form-control-sm" placeholder="Jawaban e" name="a5" value="">
+          <input type="text" class="form-control form-control-sm" placeholder="Jawaban e" name="a5" :value="answers[4].content">
         </div>
         <div class="col-2">
-          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban e" name="a5p" value="">
+          <input type="number" class="form-control form-control-sm" placeholder="Nilai Jawaban e" name="a5p" :value="answers[4].score">
         </div>
       </div>
       <div class="text-center mt-4">
-        <RouterLink to="question">
-          <input type="submit" class="btn btn-primary" value="Perbarui">
-        </RouterLink>        
+        <button class="btn btn-primary" @click="">Update</button>      
       </div>
     </b-card>
   </div>
@@ -71,16 +69,15 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
       return{
         question: [],
         categories: [],
-        answers: [],
+        answers: [{id: 0,content: '', score: 0},{id: 0,content: '', score: 0},{id: 0,content: '', score: 0},{id: 0,content: '', score: 0},{id: 0,content: '', score: 0}],
         a_index: 0,
+        inputCategory: '',
+        inputContent: ''
       }
     },
     methods:{
       getCategories(){
-        const param = Object.assign({})
-        //param.status = 1;
-        //console.log(param)
-        CategoryServices.find().then((res) => {
+        CategoryServices.find(1).then((res) => {
           //console.log(res);
           if(res.status === 200) {
             this.categories = res.data.data
@@ -91,14 +88,11 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
         })
       },
       getAnswers(){
-        const param = Object.assign({})
-        param.question_id = this.q_id
-        console.log(param)
-        QuestionServices.a_find(param).then((res) => {
+        QuestionServices.a_find(1, this.q_id).then((res) => {
           //console.log(res);
           if(res.status === 200) {
             this.answers = res.data.data
-            console.log(res)
+            console.log(res.data.data)
           }
         }).catch((err) => {
           alert(err.message)
@@ -109,6 +103,18 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
           if(res.status === 200) {
             this.question = res.data.data
           }
+        }).catch((err) => {
+          alert(err.message)
+        })
+      },
+      UpdateQuestion(){
+        const data = Object.assign({})
+        data.category_id = this.inputCategory
+        data.content = this.inputContent
+        console.log(data)
+        QuestionServices.q_update(this.q_id,data, token).then((res) => {
+          alert(res.data.message)
+          console.log(res)
         }).catch((err) => {
           alert(err.message)
         })

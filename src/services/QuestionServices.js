@@ -21,8 +21,8 @@ class QuestionServices {
   a_insert(data, token) {
     return http.post("/answer/insert", data, { headers: { Authorization: token }});
   }
-  a_find(param) {
-    return http.get("/answer", param);
+  a_find(status, id) {
+    return http.get(`/answer?status=${status}&question_id=${id}`);
   }
   a_findById(id) {
     return http.get(`/answer/${id}`);
