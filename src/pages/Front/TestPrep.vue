@@ -7,3 +7,10 @@
         <RouterLink to="test-tryout"><button style="width: 220px" class="btn bg-warning text-light bt-lg  p-2"><b>Tryout</b></button></RouterLink>
     </b-card>
 </template>
+<script>
+export default{
+    props:{
+      s_id: String
+    }
+}
+</script>

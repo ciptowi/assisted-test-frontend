@@ -1,5 +1,5 @@
 <template>
-    <!-- Participant Id Placeholder -->>
+    <!-- Participant Id Placeholder -->
     <input type="hidden" name="participant_id" id="p_id" value="1">
     <input type="hidden" name="session_id" id="s_id" value="1">
     <input type="hidden" name="category_id" id="c_id" value="1">
@@ -35,7 +35,7 @@
         </div>
 
         <!-- Load Questions from array 'questions' in JS -->
-        <div v-for="q in questions" v-show="q.id == (q_index+1)">
+        <div v-for="(q,index) in questions" v-show="index == (q_index)" :key="q.id">
             <div class="mb-4 mt-5" >
                 <p>
                     <b>{{ (q_index+1)+' ) '+q.content }}</b>
@@ -45,20 +45,17 @@
             <!-- Load Answers from array 'answers' in JS -->
             <div>
                 <div class="mb-2">
-                    <div 
-                        class="form-check-label" 
-                        v-for="a in answers"
-                    >
-                        <label v-if="a['q_id'] == q['id']">
+                    <div class="form-check-label" v-for="a in answers">
+                        <label v-if="a.question_id == q.id">
                             <input 
                                 type="radio" 
-                                :id="a['id']" 
+                                :id="a.id" 
                                 class="control-form a-radio" 
-                                :value="a['id']" 
+                                :value="a.id" 
                                 @change="answered($event)" 
-                                :name="'a'+q['id']"
+                                :name="'a'+q.id"
                             >
-                            {{ a['answer'] }}
+                            {{ a.content }}
                         </label>                    
                 </div>                
             </div>
@@ -89,7 +86,6 @@
 
 <script>
     import QuestionServices from "../../services/QuestionServices";
-    import CategoryServices from "../../services/CategoryServices";
     
     export default {
         name: 'Test',
@@ -132,27 +128,26 @@
         },
         methods: {
             getQuestions(){
-                const param = Object.assign({})
-                param.status = 1
-                param.category_id = 1
-                QuestionServices.q_find(param).then((res) => {
+                QuestionServices.q_find(1).then((res) => {
                 console.log(res);
                 if(res.status === 200) {
                     this.questions = res.data.data
+                    this.getAnswers()
                 }
                 }).catch((err) => {
                     alert(err.message)
                 })
             },
-
             getAnswers(){
+                console.log('get answers')
                 for (let i = 0; i < this.questions.length; i++) {
-                    const param = Object.assign({})
-                    param.question_id = this.questions[i][id];
-                    QuestionServices.a_find(param).then((res) => {
+                    const question_id = this.questions[i].id
+
+                    QuestionServices.a_find(1, question_id).then((res) => {
                         console.log(res);
                         if(res.status === 200) {
-                        this.answers = res.data.data
+                            this.answers = this.answers.concat(res.data.data)
+                        console.log(this.answers)
                         }
                     }).catch((err) => {
                         alert(err.message)

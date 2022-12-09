@@ -1,15 +1,14 @@
 <template>
-    <div v-for="s in a_session">
+    <div v-for="s in a_session" v-show="s.status == 1" :style="{'background-image':'url(https://www.ovconsultancy.com/wp-content/uploads/2018/11/icon_5-c34d58bc0046c04e43c86f0035e5bfda.png)'}">
     <Router-link to="/auth-login"><button class="btn btn-sm btn-success mr-4"><i class="fa fa-sign-in" aria-hidden="true"></i></button></Router-link>
-    <div class="text-center mt-3 m-b-3">
-        <!-- <b-img class="w-50" src="@/assets/Logo.jpg" fluid alt="Yayasan Bina Citra Anak Bangsa"></b-img> -->
-        <input type="hidden" name="s_id" id="s_id" :value="s.id">
-        <img style="width: 100px; margin-bottom: 10px;" src="@/assets/logo.png" alt="Yayasan Bina Citra Anak Bangsa"/>
-        <br><h5>PUSAT STUDI PENDIDIKAN DAN PEMBERDAYAAN KEWARGANEGARAAN</h5>
-        <h4 class="mt-3">Form Pendaftaran Ujian <br/>{{ s.description }}</h4>
-    </div>
-    
     <b-card class="container w-75 rounded p-3">
+        <div class="text-center mt-3 m-b-3">
+            <!-- <b-img class="w-50" src="@/assets/Logo.jpg" fluid alt="Yayasan Bina Citra Anak Bangsa"></b-img> -->
+            <input type="hidden" name="s_id" id="s_id" :value="s.id">
+            <img style="width: 100px; margin-bottom: 10px;" src="@/assets/logo.png" alt="Yayasan Bina Citra Anak Bangsa"/>
+            <br><h5>PUSAT STUDI PENDIDIKAN DAN PEMBERDAYAAN KEWARGANEGARAAN</h5>
+            <h4 class="mt-2">Form Pendaftaran Ujian <br/><div class="mt-2">{{ s.description }}</div></h4>
+        </div>
         <div class="form-group justify-content-md-center">
             <div class="row">
                 <div class="col-sm mb-3">
@@ -100,15 +99,15 @@ export default {
             const param = Object.assign({})
             param.nik = this.i_nik
             const response = await ParticipantService.find(param)
-            if (response.status === 200) {
+            if (response.status == 200) {
                 this.existing = 1
+            }else{
+                this.existing = 0
             }
             console.log(this.optionCategory)
         },
         async getCategory() {
-            const param = Object.assign({})
-            param.status = 1
-            const response = await CategoryService.find(param)
+            const response = await CategoryService.find(1)
             if (response.status === 200) {
                 this.optionCategory = response.data.data
             }

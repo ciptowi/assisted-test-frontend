@@ -54,9 +54,7 @@
       }
     },methods: {
       async getQuestions() {
-          const param = Object.assign({})
-          param.status = 1
-          const response = await QuestionServices.q_find(param)
+          const response = await QuestionServices.q_find(0)
           if (response.status === 200) {
               this.questions = response.data.data
               console.log(response)
