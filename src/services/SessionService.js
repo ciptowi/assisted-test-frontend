@@ -13,5 +13,8 @@ class SessionService {
   update(id, data, token) {
     return http.put(`/test-session/${id}`, data, { headers: { Authorization: token }});
   }
+  delete(id, data, token) {
+    return http.put(`/test-session/${id}`, { headers: { Authorization: token }});
+  }
 }
 export default new SessionService();

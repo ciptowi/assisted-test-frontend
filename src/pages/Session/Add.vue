@@ -50,9 +50,7 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
     },
     methods: {
       getCategories(){
-        const param = Object.assign({})
-        param.status = 1
-        CategoryServices.find(param).then((res) => {
+        CategoryServices.find(1).then((res) => {
           if(res.status === 200) {
             this.categories = res.data.data
             console.log(res)
@@ -65,7 +63,7 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
         const data = Object.assign({})
         data.description = this.desc_input
         data.pre_test_msg = this.pre_test_input
-        data.category_id = 2
+        data.category_id = this.category_input
         data.time_limit = this.time_input
         console.log(data)
         SessionService.insert(data, token).then((res) => {

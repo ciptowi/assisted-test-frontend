@@ -4,12 +4,12 @@
     <b-card class="float-right" v-for="s in session">
       <div class="row">
         <div class="col-6 mb-3">
-          <input type="text" class="form-control form-control-md" placeholder="Keterangan" :v-model="desc_input" name="desc" :value="s.description">
+          <input type="text" class="form-control form-control-md" placeholder="Keterangan" :v-model="desc_input" id="desc" :value="s.description">
         </div>
       </div>
       <div class="row">
         <div class="col-6">
-          <input type="text" class="form-control form-control-lg" placeholder="Pesan Pre-Test" name="pre_test" :v-model="pre_test_input" :value="s.pre_test_msg">
+          <input type="text" class="form-control form-control-lg" placeholder="Pesan Pre-Test" id="pre_test" :v-model="pre_test_input" :value="s.pre_test_msg">
         </div>
       </div>
       <div class="row mt-3">
@@ -22,13 +22,12 @@
       </div>
       <div class="row mt-3">
         <div class="col-6">
-          <input type="number" class="form-control form-control-md" placeholder="Batas Waktu (Menit)" name="time"  :v-model="time_input" :value="s.time_limit">
+          <input type="number" class="form-control form-control-md" placeholder="Batas Waktu (Menit)" id="time"  :v-model="time_input" :value="s.time_limit">
+          <input type="hidden" :v-model="status_input" :value="s.status" id="status">
         </div>
       </div>
       <div class="text-center mt-4">
-        <RouterLink to="question">
-          <input type="submit" class="btn btn-primary" value="Simpan">
-        </RouterLink>        
+        <button class="btn btn-primary" @click="UpdateSession()">Simpan</button>
       </div>
     </b-card>
   </div>
@@ -50,14 +49,13 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
         pre_test_input: '',
         category_input: [],
         time_input: '',
+        status_input:'',
         session: []
       }
     },
     methods: {
       getCategories(){
-        const param = Object.assign({})
-        param.status = 1
-        CategoryServices.find(param).then((res) => {
+        CategoryServices.find(1).then((res) => {
           if(res.status === 200) {
             this.categories = res.data.data
             console.log(res)
@@ -73,6 +71,23 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
             this.session = res.data.data
             console.log(res)
           }
+        }).catch((err) => {
+          alert(err.message)
+        })
+      },
+      UpdateSession(){
+        const data = Object.assign({})
+        data.category_id = 2
+        data.description = document.getElementById('desc').value
+        data.pre_test_msg = document.getElementById('pre_test').value
+        data.time_limit = document.getElementById('time').value
+        data.status = document.getElementById('status').value
+
+        console.log(data);
+        
+        SessionService.update(this.s_id,data,token).then((res) => {
+          alert(res.data.message)
+          this.getSession()
         }).catch((err) => {
           alert(err.message)
         })

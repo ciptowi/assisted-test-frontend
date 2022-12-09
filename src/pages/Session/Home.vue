@@ -19,19 +19,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="s in sessions">
+          <tr v-for="s in sessions" >
               <td>{{ s.description }}</td>
-              <td><div v-for="c in s.categories">{{ '- '+c }}</div></td>
+              <td><div v-for="c in categories" v-show="c.id == s.category_id">{{ '- '+c.name }}</div></td>
               <td>{{ s.time_limit+' Menit' }}</td>
               <td v-show="(s.status == 1)"><span class="status-active">Aktif</span></td>
-              <td v-show="(s.status == 2)"><span class="status-inactive">Non Aktif</span></td>
+              <td v-show="(s.status == 0)"><span class="status-inactive">Non Aktif</span></td>
               <td>
                 <RouterLink :to="'edit-session/'+s.id">
                   <button class="btn btn-sm btn-info btn-md text-white">Edit</button>
                 </RouterLink>              
-                <b-button size="sm" class="mx-1 text-white" variant="warning" v-show="(s.status == 1)" @click="UpdateSession(s.id,2)">Non-Aktifkan</b-button>
-                <b-button size="sm" class="mx-1 text-white" variant="success" v-show="(s.status == 2)" @click="UpdateSession(s.id,1)">Aktifkan</b-button>
-                <b-button size="sm" class="mx-1" variant="danger" @click="UpdateSession(s.id,0)">Hapus</b-button>
+                <b-button size="sm" class="mx-1 text-white" variant="warning" v-show="(s.status == 1)" @click="UpdateSession(s.id, s.category_id, s.description, s.pre_test_msg, s.time_limit, 0)">Non-Aktifkan</b-button>
+                <b-button size="sm" class="mx-1 text-white" variant="success" v-show="(s.status == 0)" @click="UpdateSession(s.id, s.category_id, s.description, s.pre_test_msg, s.time_limit, 1)">Aktifkan</b-button>
               </td>          
           </tr>
         </tbody>
@@ -54,9 +53,7 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
     },
     methods: {
       getCategories(){
-        const param = Object.assign({})
-        param.status = 1
-        CategoryServices.find(param).then((res) => {
+        CategoryServices.find(0).then((res) => {
           if(res.status === 200) {
             this.categories = res.data.data
             console.log(res)
@@ -75,11 +72,15 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
           alert(err.message)
         })
       },
-      UpdateSession(id,s){
+      UpdateSession(id,category_id, description,  pre_test_msg, time_limit, status){
         const data = Object.assign({})
-        data.status = s;
-        console.log('id = '+id+' status = '+s);
-        SessionService.update(id,data, token).then((res) => {
+        data.category_id = category_id
+        data.description = description
+        data.pre_test_msg = pre_test_msg
+        data.time_limit = time_limit
+        data.status = status;
+        console.log(data);
+        SessionService.update(id,data,token).then((res) => {
           alert(res.data.message)
           this.getSession()
         }).catch((err) => {
