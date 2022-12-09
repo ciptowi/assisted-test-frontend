@@ -29,14 +29,14 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="c in categories">
+          <tr v-for="c in categories" v-show="(c.status != 0)">
               <td><input type="text" class="form-control" :value=c.name :id="('c'+c.id)"></td>
               <td v-show="(c.status == 1)"><span class="status-active">Aktif</span></td>
               <td v-show="(c.status == 2)"><span class="status-inactive">Non Aktif</span></td>
               <td>
-                <b-button type="submit" class="btn btn-sm btn-info btn-md text-white" @click="Update(c.id)">Update</b-button>
-                <b-button v-show="(c.status == 1)" size="sm" class="mx-1 text-white" variant="warning" @click="UpdateCategory(c.id,)">Non-Aktifkan</b-button>
-                <b-button v-show="(c.status == 2)" size="sm" class="mx-1 text-white" variant="success" @click="UpdateStatus(c.id,1)">Aktifkan</b-button>
+                <b-button type="submit" class="btn btn-sm btn-info btn-md text-white" @click="UpdateCategory(c.id,c.status)">Update</b-button>
+                <b-button v-show="(c.status == 1)" size="sm" class="mx-1 text-white" variant="warning" @click="UpdateCategory(c.id,2)">Non-Aktifkan</b-button>
+                <b-button v-show="(c.status == 2)" size="sm" class="mx-1 text-white" variant="success" @click="UpdateCategory(c.id,1)">Aktifkan</b-button>
                 <b-button size="sm" class="mx-1" variant="danger" @click="UpdateCategory(c.id,0)">Hapus</b-button>
               </td>          
           </tr>
@@ -62,10 +62,12 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
     },
     methods: {
       getCategories(){
-        CategoryServices.find().then((res) => {
-          console.log(res);
+        const param = Object.assign({})
+        param.status = 1
+        CategoryServices.find(param).then((res) => {
           if(res.status === 200) {
             this.categories = res.data.data
+            console.log(res)
           }
         }).catch((err) => {
           alert(err.message)
@@ -85,24 +87,27 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
       },
       UpdateCategory(id,s){
         const data = Object.assign({})
-        data.status = s
-        console.log(id)
-        CategoryServices.update(id,data).then((res) => {
+        data.name = document.getElementById('c'+id).value;
+        data.status = s;
+        console.log('id = '+id+' name = '+data.name+' status = '+s);
+        CategoryServices.update(id,data, token).then((res) => {
           alert(res.data.message)
           this.getCategories()
         }).catch((err) => {
           alert(err.message)
         })
       },
-      Update(id){
-        var c_id = 'c'+id;
-        var name = document.getElementById(c_id).value;
-        console.log('Set Name into '+name+' where id == '+id);
-        //Update category name
-      },
-      UpdateStatus(id,status){
-        console.log('Set Status into '+status+' where id == '+id);
-        //Update category status
+      UpdateCategoryStatus(id,s){
+        const data = Object.assign({})
+        data.name = document.getElementById('c'+id).value;
+        data.status = s;
+        console.log(data);
+        CategoryServices.update(id,data, token).then((res) => {
+          alert(res.data.message)
+          this.getCategories()
+        }).catch((err) => {
+          alert(err.message)
+        })
       }
     },
     created () {
