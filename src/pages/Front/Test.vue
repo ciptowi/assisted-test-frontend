@@ -1,6 +1,8 @@
 <template>
     <!-- Participant Id Placeholder -->>
-    <input type="hidden" name="participant_id" value="1">
+    <input type="hidden" name="participant_id" id="p_id" value="1">
+    <input type="hidden" name="session_id" id="s_id" value="1">
+    <input type="hidden" name="category_id" id="c_id" value="1">
 
     <!-- Final Score -->
     <div class="responsive container mw-50 bg-light border rounded border-3 border-grey p-3 mt-5" v-show="finished == 1">
@@ -33,10 +35,10 @@
         </div>
 
         <!-- Load Questions from array 'questions' in JS -->
-        <div v-for="q in questions" v-show="q['id'] == (q_index+1)">
+        <div v-for="q in questions" v-show="q.id == (q_index+1)">
             <div class="mb-4 mt-5" >
                 <p>
-                    <b>{{ q['id']+' ) '+q['question'] }}</b>
+                    <b>{{ (q_index+1)+' ) '+q.content }}</b>
                 </p>            
             </div>
 
@@ -86,6 +88,9 @@
 </template>
 
 <script>
+    import QuestionServices from "../../services/QuestionServices";
+    import CategoryServices from "../../services/CategoryServices";
+    
     export default {
         name: 'Test',
         data: () => {
@@ -102,152 +107,8 @@
 
                 //get from db
                 timer: 75*60, //timer from db test_session.time_limit * 60 sec
-                questions : [ //questions array from db
-                    {
-                        id: 1,
-                        question: "Jika setiap peserta ujian sekarang sedang berpikir maka: ...",
-                    },{
-                        id: 2,
-                        question: "Elang adalah burung elang terbang ke selatan,  Beberapa burung terbang ke selatan",
-                    },{
-                        id: 3,
-                        question: "Semua anggota  asosiasi profesi harus hadir dalam",
-                    },{
-                        id: 4,
-                        question: "Semua warga desa Dayu adalah petani,  Pak Imam adalah warga desa Dayu",
-                    },{
-                        id: 5,
-                        question: "Semua pengendara harus mengenakan helm,  Sebagian pengendara mengenakan sarung tangan",
-                    },
-                ],
-                answers : [ //answers array from db
-                    {
-                        id: 1,
-                        q_id: 1,
-                        answer: "Jika Si A Sedang berpikir maka sia bukan peserta ujian",
-                        score: 0
-                    },{
-                        id: 2,
-                        q_id: 1,
-                        answer: "Jika Si A sekarang tidak berpikir maka ia peserta ujian",
-                        score: 0
-                    },{
-                        id: 3,
-                        q_id: 1,
-                        answer: "Jika Si A Sedang berpikir maka ia peserta ujian",
-                        score: 10
-                    },{
-                        id: 4,
-                        q_id: 1,
-                        answer: "Jika sekarang sedang berpikir maka si A bukan peserta ujian",
-                        score: 0
-                    },{
-                        id: 5,
-                        q_id: 1,
-                        answer: "Jika Si A bukan peserta ujian maka ia tidak sedang berpikir",
-                        score: 0
-                    },{
-                        id: 6,
-                        q_id: 2,
-                        answer: "Semua burung adalah elang",
-                        score: 0
-                    },{
-                        id: 7,
-                        q_id: 2,
-                        answer: "Tidak setiap elang yang terbang ke selatan adalah burung",
-                        score: 0
-                    },{
-                        id: 8,
-                        q_id: 2,
-                        answer: "Burung bukan elang",
-                        score: 0
-                    },{
-                        id: 9,
-                        q_id: 2,
-                        answer: "Tidak semua burung Elang terbang ke selatan",
-                        score: 0
-                    },{
-                        id: 10,
-                        q_id: 2,
-                        answer: "Tidak semua burung terbang ke selatan",
-                        score: 10
-                    },{
-                        id: 11,
-                        q_id: 3,
-                        answer: "Semua yang hadir bukan dokter",
-                        score: 0
-                    },{
-                        id: 12,
-                        q_id: 3,
-                        answer: "Semua dokter hadir dalam rapat",
-                        score: 0
-                    },{
-                        id: 13,
-                        q_id: 3,
-                        answer: "Semua yang hadir dalam rapat adalah dokter",
-                        score: 0
-                    },{
-                        id: 14,
-                        q_id: 3,
-                        answer: "sementara peserta rapat bukan anggota asosiasi profesi",
-                        score: 0
-                    },{
-                        id: 15,
-                        q_id: 3,
-                        answer: "Sementara peserta rapat adalah dokter",
-                        score: 10
-                    },{
-                        id: 16,
-                        q_id: 4,
-                        answer: "Pak Imam pasti seorang petani",
-                        score: 10
-                    },{
-                        id: 17,
-                        q_id: 4,
-                        answer: "Pak Imam bukan seorang petani",
-                        score: 0
-                    },{
-                        id: 18,
-                        q_id: 4,
-                        answer: "Pak Imam terpaksa menjadi petani",
-                        score: 0
-                    },{
-                        id: 19,
-                        q_id: 4,
-                        answer: "Pak Imam belum mau menjadi petani",
-                        score: 0
-                    },{
-                        id: 20,
-                        q_id: 4,
-                        answer: "Pak Imam petani dari desa sebelah di Dayu",
-                        score: 0
-                    },{
-                        id: 21,
-                        q_id: 5,
-                        answer: "sebagian pengendara tidak mengenakan helm",
-                        score: 0
-                    },{
-                        id: 22,
-                        q_id: 5,
-                        answer: "sebagian pengendara mengenakan helm dan sarung tangan",
-                        score: 10
-                    },{
-                        id: 23,
-                        q_id: 5,
-                        answer: "semua pengendara tidak mengenakan sarung tangan",
-                        score: 0
-                    },{
-                        id: 24,
-                        q_id: 5,
-                        answer: "sebagian pengendara tidak menggunakan helm dan sarung tangan",
-                        score: 0
-                    },{
-                        id: 25,
-                        q_id: 5,
-                        answer: "sebagian pengendara tidak mengenakan helm dan tidak mengenakan sarung tangan",
-                        score: 0
-                    },
-                ]
+                questions : [],
+                answers : []
             }            
         },
         watch: {
@@ -267,8 +128,38 @@
         },
         created() {
             window.addEventListener('beforeunload', this.endTest)
+            this.getQuestions()
         },
         methods: {
+            getQuestions(){
+                const param = Object.assign({})
+                param.status = 1
+                param.category_id = 1
+                QuestionServices.q_find(param).then((res) => {
+                console.log(res);
+                if(res.status === 200) {
+                    this.questions = res.data.data
+                }
+                }).catch((err) => {
+                    alert(err.message)
+                })
+            },
+
+            getAnswers(){
+                for (let i = 0; i < this.questions.length; i++) {
+                    const param = Object.assign({})
+                    param.question_id = this.questions[i][id];
+                    QuestionServices.a_find(param).then((res) => {
+                        console.log(res);
+                        if(res.status === 200) {
+                        this.answers = res.data.data
+                        }
+                    }).catch((err) => {
+                        alert(err.message)
+                    })
+                }
+            },
+
             //change pagination color after selecting answer
             answered(a){
                 console.log('index = '+this.q_index)  

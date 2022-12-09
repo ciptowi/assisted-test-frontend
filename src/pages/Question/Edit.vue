@@ -61,7 +61,7 @@ export default{
     getAnswers(){
       const param = Object.assign({})
       param.question_id = this.q_id;
-      QuestionServices.a_findById(param).then((res) => {
+      QuestionServices.a_find(param).then((res) => {
         //console.log(res);
         if(res.status === 200) {
           this.answers = res.data.data

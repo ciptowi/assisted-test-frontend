@@ -1,11 +1,12 @@
 <template>
+    <div v-for="s in a_session">
     <Router-link to="/auth-login"><button class="btn btn-sm btn-success mr-4"><i class="fa fa-sign-in" aria-hidden="true"></i></button></Router-link>
     <div class="text-center mt-3 m-b-3">
         <!-- <b-img class="w-50" src="@/assets/Logo.jpg" fluid alt="Yayasan Bina Citra Anak Bangsa"></b-img> -->
-        
+        <input type="hidden" name="s_id" id="s_id" :value="s.id">
         <img style="width: 100px; margin-bottom: 10px;" src="@/assets/logo.png" alt="Yayasan Bina Citra Anak Bangsa"/>
         <br><h5>PUSAT STUDI PENDIDIKAN DAN PEMBERDAYAAN KEWARGANEGARAAN</h5>
-        <h4 class="mt-3">Form Pendaftaran Ujian <br/>Seleksi Calon Perangkat Desa Dayu Tanggal 17 Desember 2022</h4>
+        <h4 class="mt-3">Form Pendaftaran Ujian <br/>{{ s.description }}</h4>
     </div>
     
     <b-card class="container w-75 rounded p-3">
@@ -17,7 +18,7 @@
             </div>
             <div class="row">
                 <div class="col-sm mb-3">
-                    <input type="text" class="form-control form-control-lg" placeholder="NIK" v-model="i_nil">
+                    <input type="text" class="form-control form-control-lg" placeholder="NIK" v-model="i_nik">
                 </div>
             </div>
             <div class="row">
@@ -40,43 +41,71 @@
             </div>
         </div>      
     </b-card>    
+    </div>
 </template>
 
 <script>
 import CategoryService from '../../services/CategoryServices'
 import ParticipantService from '../../services/ParticipantServices'
+import SessionService from '../../services/SessionService'
 
 
 export default {
     name: 'registration',
     data () {
         return {
-            t_s_id: 1,
+            a_session: [],
             i_name: '',
             i_nik: '',
             i_p_numb: '',
             i_c_id: '',
             optionCategory: [],
-            selected: ''
+            selected: '',
+            existing: 0
         }
     },
     methods: {
+        async getActiveSession() {
+            const param = Object.assign({})
+            param.status = 1
+            const response = await SessionService.find(param)
+            if (response.status === 200) {
+                this.a_session = response.data.data
+                console.log(response)
+            }
+        },
         InsertParticipant(){
             const data = Object.assign({})
-            data.test_session_id = this.t_s_id
+            data.test_session_id = document.getElementById('s_id').value
             data.category_id = this.i_c_id
             data.nik = this.i_nik
             data.name = this.i_name
             data.participant_numb = this.i_p_numb
             data.score = 0
-            ParticipantService.insert(data).then((res) => {
-                alert(res.data.message)
-                console.log(data)
-            }).catch((err) => {
-                alert(err.message)
-            })
+            console.log(data)
+            this.getParticipantByNik()
+            if (this.existing == 0) {
+                ParticipantService.insert(data).then((res) => {
+                    alert(res.data.message)
+                    this.$router.push('test-prep');
+                }).catch((err) => {
+                    alert(err.message)
+                    //this.$router.push('test-prep');
+                })    
+            }else{
+                alert('NIK Sudah terdaftar !')
+            }            
         },
-        async getAllCategory() {
+        async getParticipantByNik() {
+            const param = Object.assign({})
+            param.nik = this.i_nik
+            const response = await ParticipantService.find(param)
+            if (response.status === 200) {
+                this.existing = 1
+            }
+            console.log(this.optionCategory)
+        },
+        async getCategory() {
             const param = Object.assign({})
             param.status = 1
             const response = await CategoryService.find(param)
@@ -87,7 +116,8 @@ export default {
         }
     },
     created () {
-       this.getAllCategory()
+       this.getCategory()
+       this.getActiveSession()
     }
 }
 </script>
