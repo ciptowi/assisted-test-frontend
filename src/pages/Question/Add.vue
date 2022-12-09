@@ -57,7 +57,7 @@
 </template>
 <script>
   import QuestionServices from "../../services/QuestionServices";
-  import CategoryServices from "../../services/categoryServices";
+  import CategoryServices from "../../services/CategoryServices";
 
   const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
 
