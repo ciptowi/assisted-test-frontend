@@ -36,6 +36,9 @@
 
 <script>
   import AdminServices from "../../services/AdminServices";
+  import { userAuthStore } from '../../stores/auth'
+
+  const store = userAuthStore()
 
   export default {
     data() {
@@ -62,6 +65,7 @@
           } else {
             this.isLoading = false
             localStorage.setItem("AUTH_KEY", JSON.stringify(res.data.data))
+            store.addStore()
             this.$router.push("/dashboard");
           }
         }).catch((err) => {

@@ -31,6 +31,9 @@
 </template>
 
 <script>
+// import { userAuthStore } from '../stores/auth'
+
+// const store = userAuthStore()
 
 export default {
   name: "NavBar",
@@ -41,9 +44,13 @@ export default {
   },
   methods: {
     logout: function() {
+      // store.resetStore()
       localStorage.removeItem("AUTH_KEY")
       this.$router.push("/auth-login");
     }
+  },
+  mounted () {
+    // this.user = store.getUsername()
   }
 }
 </script>

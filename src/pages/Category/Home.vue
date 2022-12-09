@@ -51,6 +51,8 @@
 <script>
 import CategoryServices from "../../services/CategoryServices";
 
+const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
+
   export default{
     data: ()=>{
       return{
@@ -73,7 +75,7 @@ import CategoryServices from "../../services/CategoryServices";
         const data = Object.assign({})
         data.name = this.inputCategory
         data.status = 1
-        CategoryServices.insert(data).then((res) => {
+        CategoryServices.insert(data, token).then((res) => {
           this.inputCategory = ''
           alert(res.data.message)
           this.getCategories()

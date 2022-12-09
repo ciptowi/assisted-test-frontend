@@ -4,13 +4,13 @@ export const userAuthStore = defineStore({
   id: 'auth',
   state: () => ({
     id: '',
-    name: '',
+    username: '',
     token: '',
     isAdmin: false
   }),
   getters: {
     getToken: (state) => { return state.token },
-    getName: (state) => { return state.name },
+    getUsername: (state) => { return state.username },
     getId: (state) => { return state.id },
   },
   actions: {
@@ -18,16 +18,19 @@ export const userAuthStore = defineStore({
       const storage = JSON.parse(localStorage.getItem('AUTH_KEY'))
       if (storage !== null) {
         this.id = storage.id
-        this.name = storage.name
+        this.username = storage.username
         this.token = storage.token
         this.isAdmin = true
       }
     },
     resetStore() {
       this.id = ''
-      this.name = ''
+      this.username = ''
       this.token = ''
       this.isAdmin = false
+    },
+    getAuthToken() {
+      return this.token
     }
   },
 });
