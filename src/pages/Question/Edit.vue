@@ -31,61 +31,65 @@
   </div>
 </template>
 <script>
-import QuestionServices from "../../services/QuestionServices";
-import CategoryServices from "../../services/CategoryServices";
+import QuestionServices from "../../services/QuestionServices"
+import CategoryServices from "../../services/CategoryServices"
 
-export default{
-  props:{
-    q_id: String
-  },
-  data: ()=>{
-    return{
-      question: [],
-      categories: [],
-      answers: [],
+const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
+
+  export default{
+    props:{
+      q_id: String
+    },
+    data: ()=>{
+      return{
+        question: [],
+        categories: [],
+        answers: [],
+      }
+    },
+    methods:{
+      getCategories(){
+        const param = Object.assign({})
+        param.status = 1;
+        //console.log(param)
+        CategoryServices.find(param).then((res) => {
+          //console.log(res);
+          if(res.status === 200) {
+            this.categories = res.data.data
+            console.log(res)
+          }
+        }).catch((err) => {
+          alert(err.message)
+        })
+      },
+      getAnswers(){
+        const param = Object.assign({})
+        param.question_id = this.q_id;
+        QuestionServices.a_find(param).then((res) => {
+          //console.log(res);
+          if(res.status === 200) {
+            this.answers = res.data.data
+          }
+        }).catch((err) => {
+          alert(err.message)
+        })
+      },
+      getQuestion(){
+        QuestionServices.q_findById(this.q_id).then((res) => {
+          //console.log(res);
+          if(res.status === 200) {
+            this.question = res.data.data
+            //console.log(this.question)
+          }
+        }).catch((err) => {
+          alert(err.message)
+        })
+      },
+    },
+    created(){
+      this.getQuestion()
+      this.getCategories()
+      this.getAnswers()
     }
-  },
-  methods:{
-    getCategories(){
-      const param = Object.assign({})
-      param.status = 1;
-      CategoryServices.find(param).then((res) => {
-        //console.log(res);
-        if(res.status === 200) {
-          this.categories = res.data.data
-        }
-      }).catch((err) => {
-        alert(err.message)
-      })
-    },
-    getAnswers(){
-      const param = Object.assign({})
-      param.question_id = this.q_id;
-      QuestionServices.a_find(param).then((res) => {
-        //console.log(res);
-        if(res.status === 200) {
-          this.answers = res.data.data
-        }
-      }).catch((err) => {
-        alert(err.message)
-      })
-    },
-    getQuestion(){
-      QuestionServices.q_findById(this.q_id).then((res) => {
-        //console.log(res);
-        if(res.status === 200) {
-          this.question = res.data.data
-          console.log(this.question)
-        }
-      }).catch((err) => {
-        alert(err.message)
-      })
-    },
-  },
-  created(){
-    this.getQuestion()
-    this.getCategories()
-    this.getAnswers()
   }
-}
 </script>
