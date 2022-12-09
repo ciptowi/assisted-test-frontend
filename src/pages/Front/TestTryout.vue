@@ -1,4 +1,5 @@
 <template>
+<div  :style="{'background-image':'url(https://www.ovconsultancy.com/wp-content/uploads/2018/11/icon_5-c34d58bc0046c04e43c86f0035e5bfda.png)'}">
     <!-- Participant Id Placeholder -->
     <input type="hidden" name="participant_id" value="1">
     <!-- Final Score -->
@@ -85,7 +86,7 @@
             </button>
         </div>    
     </div>
-       
+</div>
 </template>
 
 <script>
