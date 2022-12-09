@@ -63,7 +63,7 @@
           }
       },
       getCategories(){
-        CategoryServices.find().then((res) => {
+        CategoryServices.find(0).then((res) => {
           console.log(res);
           if(res.status === 200) {
             this.categories = res.data.data

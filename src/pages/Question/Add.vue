@@ -4,9 +4,9 @@
     <b-card class="float-right">
       <div class="row">
         <div class="col-3">
-          <select class="form-control form-control-md" name="c" id="c" required v-model="inputCategory">
+          <select class="form-control form-control-md" name="c" id="c">
             <option disabled selected> -- Pilih Kategori -- </option>
-            <option v-for="c in categories" :value="c.id" v-show="(c.status == 1)">{{ c.name }}</option>
+            <option v-for="c in categories" :value='c.id' v-show="(c.status == 1)">{{ c.name }}</option>
           </select>
         </div>
         <div class="col-9">
@@ -68,13 +68,11 @@
         question: [],
         q_id: '',
         inputCategory: '',
-        inputContent
+        inputContent: ''
       }
     },methods: {
       getCategories(){
-        const param = Object.assign({})
-        param.status = 1
-        CategoryServices.find(param).then((res) => {
+        CategoryServices.find(0).then((res) => {
           if(res.status === 200) {
             this.categories = res.data.data
             console.log(res)
@@ -84,15 +82,15 @@
         })
       },
       InsertQuestion(){
+        const cat = document.getElementById('c')
         const data = Object.assign({})
-        data.category_id = this.inputCategory
         data.content = this.inputContent
-        data.status = 1
+        data.category_id = cat.value
+        //console.log(data)
         QuestionServices.q_insert(data, token).then((res) => {
           alert(res.data.message)
           console.log(res)
           this.getQuestion()
-          this.QInsertQuestion()
         }).catch((err) => {
           alert(err.message)
         })
@@ -104,7 +102,8 @@
             var lastPosition = this.question.length -1;
             console.log(this.question[lastPosition])
             this.q_id = this.question[lastPosition].id
-            console.log(this.q_id)            
+            console.log(this.q_id)   
+            this.QInsertQuestion()         
           }
         }).catch((err) => {
           alert(err.message)
@@ -112,31 +111,33 @@
       },
       InsertAnswers(content,score){
         const data = Object.assign({})
-        data.question_id = this.q_id
         data.content = content
+        data.question_id = this.q_id
         data.score = score
+        //console.log(data)
         QuestionServices.a_insert(data, token).then((res) => {
           //alert(res.data.message)
           console.log('success input '+content+' ('+score+')')
         }).catch((err) => {
           alert(err.message)
+          console.log('failet input '+content+' ('+score+')')
         })
       },
-        QInsertQuestion(){
-          var answers = [];//array of answers and score
-          
-          for(let ac = 1; ac < 6; ac++){
-            var answer = document.getElementById('a'+ac).value;
-            var score = document.getElementById('s'+ac).value;
+      QInsertQuestion(){
+        var answers = [];//array of answers and score
+        
+        for(let ac = 1; ac < 6; ac++){
+          var answer = document.getElementById('a'+ac).value;
+          var score = document.getElementById('s'+ac).value;
 
-            this.InsertAnswers(answer, score)
-          }
-          this.$router.push('question');
-          console.log(answers);
-        }  
-      },
-      created(){
-        this.getCategories()
-      }
+          this.InsertAnswers(answer, score)
+        }
+        this.$router.push('question');
+        console.log(answers);
+      }  
+    },
+    created(){
+      this.getCategories()
+    }
   }
 </script>
