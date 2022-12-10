@@ -79,32 +79,42 @@ export default {
             data.category_id = this.i_c_id
             data.nik = this.i_nik
             data.name = this.i_name
-            data.participant_numb = this.i_p_numb
+            data.partisipant_numb = this.i_p_numb
             data.score = 0
-            console.log(data)
-            this.getParticipantByNik()
-            if (this.existing == 0) {
+            //console.log(data)
+            this.getParticipantByNik(data);
+            /*if (this.existing == 0) {
                 ParticipantService.insert(data).then((res) => {
                     alert(res.data.message)
-                    this.$router.push('test-prep');
+                    //this.$router.push('test-prep');
                 }).catch((err) => {
                     alert(err.message)
                     //this.$router.push('test-prep');
                 })    
             }else{
                 alert('NIK Sudah terdaftar !')
-            }            
+            }*/         
         },
-        async getParticipantByNik() {
-            const param = Object.assign({})
-            param.nik = this.i_nik
-            const response = await ParticipantService.find(param)
-            if (response.status == 200) {
+        async getParticipantByNik(data) {
+            const nik = this.i_nik
+            const response = await ParticipantService.find(nik)
+            const r_data = response.data.data
+            if (r_data.length > 0) {                
                 this.existing = 1
+                console.log(r_data)
+                alert('NIK Sudah terdaftar !')
             }else{
-                this.existing = 0
+                console.log(data)
+                ParticipantService.insert(data).then((res) => {
+                    alert(res.data.message)
+                    this.$router.push('test-prep/'+nik);
+                }).catch((err) => {
+                    alert(err.message)
+                    //this.$router.push('test-prep');
+                })
             }
-            console.log(this.optionCategory)
+            console.log(this.response)
+            
         },
         async getCategory() {
             const response = await CategoryService.find(1)

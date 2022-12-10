@@ -4,8 +4,8 @@ class ParticipantServices {
   insert(data) {
     return http.post("/participant/insert", data);
   }
-  find(param) {
-    return http.get("/participant", param);
+  find(nik) {
+    return http.get(`/participant?nik=${nik}`);
   }
   findById(id) {
     return http.get(`/participant/${id}`);

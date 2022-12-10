@@ -87,8 +87,12 @@
 
 <script>
     import QuestionServices from "../../services/QuestionServices";
+    import ParticipantService from '../../services/ParticipantServices'
     
     export default {
+        props:{
+            nik: String
+        },
         name: 'Test',
         data: () => {
             return{
@@ -105,7 +109,8 @@
                 //get from db
                 timer: 75*60, //timer from db test_session.time_limit * 60 sec
                 questions : [],
-                answers : []
+                answers : [],
+                participant: [],
             }            
         },
         watch: {
@@ -126,8 +131,17 @@
         created() {
             window.addEventListener('beforeunload', this.endTest)
             this.getQuestions()
+            this.getParticipantByNik()
         },
         methods: {
+            async getParticipantByNik() {
+                console.log('Get Participant')
+                const nik = this.nik
+                const response = await ParticipantService.find(nik)
+                const r_data = response.data.data
+                this.participant = r_data
+                console.log(r_data)            
+            },
             getQuestions(){
                 QuestionServices.q_find(1).then((res) => {
                 console.log(res);
@@ -175,6 +189,25 @@
                 this.q_index = i;
             },
 
+            UpdateParticipant(){
+                const id = this.participant[0].id
+                const data = Object.assign({})
+                data.category_id = this.participant[0].category_id
+                data.nik = this.participant[0].nik
+                data.name = this.participant[0].name
+                data.partisipant_numb = this.participant[0].partisipant_numb
+                data.score = this.final_score
+                data.status = 2
+                console.log('id = '+id)
+                console.log(data);
+                ParticipantService.update(id,data).then((res) => {
+                    alert(res.data.message)
+                    console.log('Data Tersimpan')
+                }).catch((err) => {
+                    alert(err.message)
+                })
+            },
+
             //finish test
             endTest(){
                 var a_radios = document.getElementsByClassName('a-radio');
@@ -191,6 +224,7 @@
                     for( var a_i = 0, a_l = this.answers.length; a_i < a_l; a_i++ ){
                         if( this.a_selected[as_i] == this.answers[a_i].id ){
                             this.final_score = this.final_score+this.answers[a_i].score;
+                            
                             if( this.answers[a_i].score != 0 ){
                                 this.a_right++
                             }
@@ -206,6 +240,8 @@
 
                 //change state to finished
                 this.finished = 1;
+
+                this.UpdateParticipant()
             },
         },
     }

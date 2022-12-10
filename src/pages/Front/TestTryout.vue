@@ -4,7 +4,7 @@
     <input type="hidden" name="participant_id" value="1">
     <!-- Final Score -->
     <div class="responsive container mw-50 bg-light border rounded border-3 border-grey p-3 mt-5" v-show="finished == 1">
-        <Router-Link to="test-prep">
+        <Router-Link :to="'/test-prep/'+nik">
             <button class="btn btn-warning text-light">Kembali</button>
         </Router-Link>
         <div class="text-center mt-3 m-b-3">
@@ -24,7 +24,7 @@
 
     <!-- Quiz Section -->
     <div class="responsive container mw-50 bg-light border rounded border-3 border-grey p-3 mt-5" v-show="finished == 0">
-        <Router-Link to="test-prep">
+        <Router-Link :to="'/test-prep/'+nik">
             <button class="btn btn-warning text-light">Kembali</button>
         </Router-Link>
         <!-- Timer Placeholder -->
@@ -90,7 +90,12 @@
 </template>
 
 <script>
+import ParticipantService from '../../services/ParticipantServices'
+
     export default {
+        props:{
+            nik: String
+        },
         name: 'Test',
         data: () => {
             return{
@@ -249,6 +254,9 @@
                 ]
             }            
         },
+        created () {
+            this.getParticipantByNik()
+        },
         watch: {
             //countdown timer function
             timer: {
@@ -265,6 +273,13 @@
             },
         },
         methods: {
+            async getParticipantByNik() {
+                const nik = this.nik
+                const response = await ParticipantService.find(nik)
+                const r_data = response.data.data
+                
+                console.log(r_data)            
+            },
             //change pagination color after selecting answer
             answered(a){
                 console.log('index = '+this.q_index)  

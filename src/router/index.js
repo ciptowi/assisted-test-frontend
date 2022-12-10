@@ -12,24 +12,27 @@ const router = createRouter({
       }
     },
     {
-      path: "/test-prep",
+      path: '/test-prep/:nik',
       name: "test-prep",
+      props: true,
       component: () => import("../pages/Front/TestPrep.vue"),
       meta: {
         public: true
       }
     },
     {
-      path: "/test-tryout",
+      path: '/test-tryout/:nik',
       name: "test-tryout",
+      props: true,
       component: () => import("../pages/Front/TestTryout.vue"),
       meta: {
         public: true
       }
     },
     {
-      path: "/test-start",
+      path: '/test-start/:nik',
       name: "test-start",
+      props: true,
       component: () => import("../pages/Front/Test.vue"),
       meta: {
         public: true
