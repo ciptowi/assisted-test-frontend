@@ -68,7 +68,7 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
         console.log(data)
         SessionService.insert(data, token).then((res) => {
           alert(res.data.message)
-          //this.$router.push('session');
+          this.$router.push('/session');
         }).catch((err) => {
           alert(err.message)
         })

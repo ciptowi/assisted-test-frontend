@@ -15,7 +15,7 @@
       <div class="row mt-3">
         <div class="col-6">
           <div class="form-check form-switch" v-for="c in categories" v-show="c.status == 1">
-            <input type="checkbox" class="form-check-input" :id="'c'+c.id" :value="c.id" v-model="category_input" :checked="c.id == s.category_id">
+            <input type="radio" class="form-check-input" name="c" :id="'c'+c.id" :value="c.id" v-model="category_input" :checked="c.id == s.category_id">
             <label class="form-check-label" :for="'c'+c.id">{{ c.name }}</label>
           </div>
         </div>
@@ -47,7 +47,7 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
         categories: [],
         desc_input: '',
         pre_test_input: '',
-        category_input: [],
+        category_input: '',
         time_input: '',
         status_input:'',
         session: []
@@ -77,7 +77,7 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
       },
       UpdateSession(){
         const data = Object.assign({})
-        data.category_id = 2
+        data.category_id = this.category_input
         data.description = document.getElementById('desc').value
         data.pre_test_msg = document.getElementById('pre_test').value
         data.time_limit = document.getElementById('time').value
@@ -88,6 +88,7 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
         SessionService.update(this.s_id,data,token).then((res) => {
           alert(res.data.message)
           this.getSession()
+          this.$router.push('/session');
         }).catch((err) => {
           alert(err.message)
         })
