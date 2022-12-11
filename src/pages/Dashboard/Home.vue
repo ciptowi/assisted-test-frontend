@@ -41,8 +41,9 @@
               <td v-for="c in categories" v-show="c.id == p.category_id">{{ c.name }}</td>
               <td>{{ p.nik }}</td>
               <td>{{ p.partisipant_numb }}</td>
-              <td v-show="(p.status == 1)">Belum Mengerjakan Ujian</td>
-              <td v-show="(p.status == 2)">Selesai Mengerjakan Ujian</td>
+              <td v-show="(p.status == 1)">Sudah Login</td>
+              <td v-show="(p.status == 2)">Sedang Mengerjakan Ujian</td>
+              <td v-show="(p.status == 3)">Selesai Mengerjakan Ujian</td>
               <td>{{ p.score }}</td>
           </tr>
         </tbody>
@@ -125,6 +126,9 @@
         this.getCategories()
         this.getSession()
         this.getparticipant()
+        setInterval(() => {
+          this.getparticipant()
+        }, 3000)
       }
     }
 </script>

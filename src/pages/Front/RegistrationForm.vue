@@ -65,12 +65,11 @@ export default {
     },
     methods: {
         async getActiveSession() {
-            const param = Object.assign({})
-            param.status = 1
-            const response = await SessionService.find(param)
+            const response = await SessionService.find(1)
             if (response.status === 200) {
                 this.a_session = response.data.data
                 console.log(response)
+                this.getCategory()
             }
         },
         InsertParticipant(){
@@ -107,7 +106,7 @@ export default {
                 console.log(data)
                 ParticipantService.insert(data).then((res) => {
                     alert(res.data.message)
-                    this.$router.push('test-prep/'+nik);
+                    this.$router.push('/test-prep/'+nik);
                 }).catch((err) => {
                     alert(err.message)
                     //this.$router.push('test-prep');
@@ -117,7 +116,7 @@ export default {
             
         },
         async getCategory() {
-            const response = await CategoryService.find(1)
+            const response = await CategoryService.findById(this.a_session[0].category_id)
             if (response.status === 200) {
                 this.optionCategory = response.data.data
             }
@@ -125,7 +124,6 @@ export default {
         }
     },
     created () {
-       this.getCategory()
        this.getActiveSession()
     }
 }

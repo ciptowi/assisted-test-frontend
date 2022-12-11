@@ -130,20 +130,21 @@
         },
         created() {
             window.addEventListener('beforeunload', this.endTest)
-            this.getQuestions()
             this.getParticipantByNik()
+            //this.getQuestions()            
         },
         methods: {
             async getParticipantByNik() {
-                console.log('Get Participant')
+                console.log('Get Participant by NIK')
                 const nik = this.nik
                 const response = await ParticipantService.find(nik)
                 const r_data = response.data.data
                 this.participant = r_data
                 console.log(r_data)            
+                this.getQuestions()
             },
             getQuestions(){
-                QuestionServices.q_find(1).then((res) => {
+                QuestionServices.q_find(1,this.participant[0].category_id).then((res) => {
                 console.log(res);
                 if(res.status === 200) {
                     this.questions = res.data.data
@@ -153,20 +154,19 @@
                     alert(err.message)
                 })
             },
-            getAnswers(){
+            async getAnswers(){
                 console.log('get answers')
                 for (let i = 0; i < this.questions.length; i++) {
                     const question_id = this.questions[i].id
 
-                    QuestionServices.a_find(1, question_id).then((res) => {
-                        console.log(res);
-                        if(res.status === 200) {
-                            this.answers = this.answers.concat(res.data.data)
-                        console.log(this.answers)
-                        }
-                    }).catch((err) => {
+                    const res = await QuestionServices.a_find(1, question_id)
+                    console.log(res);
+                    if(res.status === 200) {
+                        this.answers = this.answers.concat(res.data.data)
+                    console.log(this.answers)
+                    }else{
                         alert(err.message)
-                    })
+                    }
                 }
             },
 
@@ -197,12 +197,11 @@
                 data.name = this.participant[0].name
                 data.partisipant_numb = this.participant[0].partisipant_numb
                 data.score = this.final_score
-                data.status = 2
+                data.status = 3
                 console.log('id = '+id)
                 console.log(data);
                 ParticipantService.update(id,data).then((res) => {
-                    alert(res.data.message)
-                    console.log('Data Tersimpan')
+                    alert('Semoga sukses selalu')
                 }).catch((err) => {
                     alert(err.message)
                 })

@@ -4,8 +4,8 @@ class SessionService {
   insert(data, token) {
     return http.post("/test-session/insert", data, { headers: { Authorization: token }});
   }
-  find(param) {
-    return http.get("/test-session", param);
+  find(status) {
+    return http.get(`/test-session?status=${status}`);
   }
   findById(id) {
     return http.get(`/test-session/${id}`);

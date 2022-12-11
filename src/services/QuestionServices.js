@@ -4,8 +4,8 @@ class QuestionServices {
   q_insert(data, token) {
     return http.post("/question/insert", data, { headers: { Authorization: token }});
   }
-  q_find(status) {
-    return http.get(`/question?status=${status}`);
+  q_find(status, category_id) {
+    return http.get(`/question?status=${status}&category_id=${category_id}`);
   }
   q_findById(id) {
     return http.get(`/question/${id}`);
