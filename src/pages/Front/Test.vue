@@ -15,7 +15,7 @@
         <b-card class="container w-50 rounded p-3">
             <div class="form-group text-center">
                 <h3>Skor Akhir</h3>
-                <h1 class="mb-3">{{ (final_score*100/(10*questions.length)) }}</h1>
+                <h1 class="mb-3">{{ Math.floor(final_score*100/(10*questions.length)) }}</h1>
 
                 <h3>Benar : <span>{{ a_right }}</span></h3>
                 <h3>Salah : <span>{{ a_wrong }}</span></h3>
@@ -196,7 +196,7 @@
                 data.nik = this.participant[0].nik
                 data.name = this.participant[0].name
                 data.partisipant_numb = this.participant[0].partisipant_numb
-                data.score = this.final_score
+                data.score = Math.floor(this.final_score*100/(10*this.questions.length))
                 data.status = 3
                 console.log('id = '+id)
                 console.log(data);

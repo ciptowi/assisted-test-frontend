@@ -38,7 +38,7 @@
         <tbody>
           <tr v-for="p in participant">
               <td>{{ p.name }}</td>
-              <td v-for="c in categories" v-show="c.id == p.category_id">{{ c.name }}</td>
+              <td>{{ p.c_name }}</td>
               <td>{{ p.nik }}</td>
               <td>{{ p.partisipant_numb }}</td>
               <td v-show="(p.status == 1)">Sudah Login</td>
@@ -69,19 +69,23 @@
           participant:[],
           categories: [],
           export: {
-            data: [
-              { name: "Tom", phone: "+86 01012", email: "000@gmail.com" },
-              { name: "Jack", phone: "+86 01012", email: "000@gmail.com" },
-              { name: "Alice", phone: "+86 01012", email: "000@gmail.com" }
-            ],
-            head: ["name", "phone", "email"],
+            data: [],
+            head: [],
             fileName: "Hasil Tes.csv"
           },
-          participant_head : ['id','id kategori','id sesi ujian','nik','nama','nomor peserta','nilai','status','waktu pendaftaran','waktu data diperbarui']
+          participant_head : ['nik','nama','nomor peserta','nilai','status(1 = terdaftar; 2 = mengerjakan; 3 = selesai mengerjakan)','waktu pendaftaran','kategori']
         }
       },
       methods: {
         download() {
+          for (let i = 0; i < this.participant.length; i++) {
+            delete this.participant[i].category_id;
+            delete this.participant[i].id;
+            delete this.participant[i].test_session_id;
+            delete this.participant[i].updated_at;
+          }
+          console.log('Export')
+          console.log(this.participant)
           this.export.data = this.participant
           this.export.head = this.participant_head
           console.log(this.export.data)
