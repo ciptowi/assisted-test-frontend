@@ -66,9 +66,10 @@
       return{
         categories: [],
         question: [],
+        answer: [],
         q_id: '',
         inputCategory: '',
-        inputContent: ''
+        inputContent: '',
       }
     },methods: {
       getCategories(){
@@ -86,24 +87,38 @@
         const data = Object.assign({})
         data.content = this.inputContent
         data.category_id = cat.value
+        data.id = this.q_id
+        data.status = 1
         //console.log(data)
         QuestionServices.q_insert(data, token).then((res) => {
           alert(res.data.message)
           console.log(res)
-          this.getQuestion()
+          this.QInsertQuestion()
         }).catch((err) => {
           alert(err.message)
         })
       },
       getQuestion(){
-        QuestionServices.q_find().then((res) => {
+        QuestionServices.q_find(0).then((res) => {
           if(res.status === 200) {
             this.question = res.data.data
             var lastPosition = this.question.length -1;
             console.log(this.question[lastPosition])
-            this.q_id = this.question[lastPosition].id
-            console.log(this.q_id)   
-            this.QInsertQuestion()         
+            this.q_id = this.question[lastPosition].id+1
+            console.log('question id = '+this.q_id)            
+          }
+        }).catch((err) => {
+          alert(err.message)
+        })
+      },
+      getAnswer(){
+        QuestionServices.a_find(0,0).then((res) => {
+          if(res.status === 200) {
+            this.answer = res.data.data
+            var lastPosition = this.answer.length -1;
+            console.log(this.answer[lastPosition])
+            this.a_id = this.answer[lastPosition].id
+            console.log('latest answer id = '+this.a_id)            
           }
         }).catch((err) => {
           alert(err.message)
@@ -111,6 +126,7 @@
       },
       InsertAnswers(content,score){
         const data = Object.assign({})
+        data.id = this.a_id
         data.content = content
         data.question_id = this.q_id
         data.score = score
@@ -129,7 +145,7 @@
         for(let ac = 1; ac < 6; ac++){
           var answer = document.getElementById('a'+ac).value;
           var score = document.getElementById('s'+ac).value;
-
+          this.a_id = this.a_id+1
           this.InsertAnswers(answer, score)
         }
         this.$router.push('question');
@@ -138,6 +154,8 @@
     },
     created(){
       this.getCategories()
+      this.getQuestion()
+      this.getAnswer()
     }
   }
 </script>
