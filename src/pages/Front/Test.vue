@@ -156,10 +156,10 @@
             },
             async getAnswers(){
                 console.log('get answers')
-                for (let i = 0; i < this.questions.length; i++) {
-                    const question_id = this.questions[i].id
+                //for (let i = 0; i < this.questions.length; i++) {
+                    //const question_id = this.questions[i].id
 
-                    const res = await QuestionServices.a_find(1, question_id)
+                    const res = await QuestionServices.a_find(1, 0, this.participant[0].category_id)
                     console.log(res);
                     if(res.status === 200) {
                         this.answers = this.answers.concat(res.data.data)
@@ -167,7 +167,7 @@
                     }else{
                         alert(err.message)
                     }
-                }
+                //}
             },
 
             //change pagination color after selecting answer

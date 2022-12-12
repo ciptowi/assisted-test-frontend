@@ -88,7 +88,7 @@ const token = JSON.parse(localStorage.getItem("AUTH_KEY")).token
         })
       },
       getAnswers(){
-        QuestionServices.a_find(1, this.q_id).then((res) => {
+        QuestionServices.a_find(1, this.q_id, 0).then((res) => {
           //console.log(res);
           if(res.status === 200) {
             this.answers = res.data.data

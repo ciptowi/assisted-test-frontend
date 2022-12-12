@@ -21,11 +21,11 @@ class QuestionServices {
   a_insert(data, token) {
     return http.post("/answer/insert", data, { headers: { Authorization: token }});
   }
-  a_find(status, id) {
-    return http.get(`/answer?status=${status}&question_id=${id}`);
+  a_find(status, q_id, c_id) {
+    return http.get(`/answer?status=${status}&question_id=${q_id}&category_id=${c_id}`);
   }
   a_findById(id) {
-    return http.get(`/answer/${id}`);
+    return http.getById(`/answer/${id}`);
   }
   a_update(id, data, token) {
     return http.put(`/answer/${id}`, data, { headers: { Authorization: token }});
