@@ -1,5 +1,8 @@
 <template>
-<div  :style="{'background-image':'url(https://www.ovconsultancy.com/wp-content/uploads/2018/11/icon_5-c34d58bc0046c04e43c86f0035e5bfda.png)'}">
+<div class="text-center" v-if="loading == true">
+    <h5><b>Loading...</b></h5>
+</div>
+<div  :style="{'background-image':'url(https://www.ovconsultancy.com/wp-content/uploads/2018/11/icon_5-c34d58bc0046c04e43c86f0035e5bfda.png)'}" v-if="loading == false">
     <!-- Participant Id Placeholder -->
     <input type="hidden" name="participant_id" id="p_id" value="1">
     <input type="hidden" name="session_id" id="s_id" value="1">
@@ -96,6 +99,7 @@
         name: 'Test',
         data: () => {
             return{
+                loading: false,//loading
                 a_right: 0, //right answer
                 a_wrong: 0, //wrong answer
                 finished :0, //finished state
@@ -129,8 +133,10 @@
             },
         },
         created() {
+            this.loading = true
             window.addEventListener('beforeunload', this.endTest)
             this.getParticipantByNik()
+            console.log('proses selesai')
             //this.getQuestions()            
         },
         methods: {
@@ -159,10 +165,11 @@
                 //for (let i = 0; i < this.questions.length; i++) {
                     //const question_id = this.questions[i].id
 
-                    const res = await QuestionServices.a_find(1, 0, this.participant[0].category_id)
+                    const res = await QuestionServices.a_find(0, 0, 0)
                     console.log(res);
                     if(res.status === 200) {
-                        this.answers = this.answers.concat(res.data.data)
+                        this.answers = res.data.data
+                        this.loading = false
                     console.log(this.answers)
                     }else{
                         alert(err.message)
@@ -201,7 +208,7 @@
                 console.log('id = '+id)
                 console.log(data);
                 ParticipantService.update(id,data).then((res) => {
-                    alert('Semoga sukses selalu')
+                    //alert('Semoga sukses selalu')
                 }).catch((err) => {
                     alert(err.message)
                 })

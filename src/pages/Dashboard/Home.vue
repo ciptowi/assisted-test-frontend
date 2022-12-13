@@ -130,9 +130,7 @@
         this.getCategories()
         this.getSession()
         this.getparticipant()
-        setInterval(() => {
-          this.getparticipant()
-        }, 3000)
+        
       }
     }
 </script>

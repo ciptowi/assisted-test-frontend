@@ -1,5 +1,8 @@
 <template>
-    <div v-for="s in a_session" v-show="s.status == 1" :style="{'background-image':'url(https://www.ovconsultancy.com/wp-content/uploads/2018/11/icon_5-c34d58bc0046c04e43c86f0035e5bfda.png)'}">
+    <div class="text-center" v-if="loading == true">
+        <h5><b>Loading...</b></h5>
+    </div>
+    <div v-for="s in a_session" v-show="s.status == 1" :style="{'background-image':'url(https://www.ovconsultancy.com/wp-content/uploads/2018/11/icon_5-c34d58bc0046c04e43c86f0035e5bfda.png)'}" v-if="loading == false">
     <Router-link to="/auth-login"><button class="btn btn-sm btn-success mr-4"><i class="fa fa-sign-in" aria-hidden="true"></i></button></Router-link>
     <b-card class="container w-75 rounded p-3">
         <div class="text-center mt-3 m-b-3">
@@ -53,6 +56,7 @@ export default {
     name: 'registration',
     data () {
         return {
+            loading: false,//loading
             a_session: [],
             i_name: '',
             i_nik: '',
@@ -73,6 +77,7 @@ export default {
             }
         },
         InsertParticipant(){
+            this.loading = true
             const data = Object.assign({})
             data.test_session_id = document.getElementById('s_id').value
             data.category_id = this.i_c_id
@@ -105,7 +110,7 @@ export default {
             }else{
                 console.log(data)
                 ParticipantService.insert(data).then((res) => {
-                    alert(res.data.message)
+                    //alert(res.data.message)
                     this.$router.push('/test-prep/'+nik);
                 }).catch((err) => {
                     alert(err.message)
@@ -121,9 +126,11 @@ export default {
                 this.optionCategory = response.data.data
             }
             console.log(this.optionCategory)
+            this.loading = false
         }
     },
     created () {
+        this.loading = true
        this.getActiveSession()
     }
 }
